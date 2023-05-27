@@ -14,6 +14,9 @@ import { BiRename } from "react-icons/bi";
 import ServiceInput from "../inputs/ServiceInput";
 import Input from "../inputs/Input";
 import { IoLocationOutline } from "react-icons/io5";
+import InputNomoratur from "../inputs/InputNomoratur";
+import Counter from "../inputs/Counter";
+import MultipleSelect from "../inputs/MultipleSelect";
 
 enum STEPS {
   SERVICE = 0,
@@ -62,22 +65,24 @@ const CreateModal = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       service: "",
+      tempat: "",
       lokasi: "",
       nomoraturAwal: 1,
       nomoraturAkhir: 1,
       eSamsat: 1,
       jumlahBatal: 1,
-      nomoraturBatal: [],
+      listBatal: [],
     },
   });
 
   const service = watch("service");
+  const tempat = watch("tempat");
   const lokasi = watch("lokasi");
   const nomoraturAwal = watch("nomoraturAwal");
   const nomoraturAkhir = watch("nomoraturAkhir");
   const eSamsat = watch("eSamsat");
   const jumlahBatal = watch("jumlahBatal");
-  const nomoraturBatal = watch("nomoraturBatal");
+  const listBatal = watch("listBatal");
 
   const setCostumValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -174,27 +179,56 @@ const CreateModal = () => {
   if (step === STEPS.NOMORATUR) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Heading title="Lokasi anda" subtitle="Dimana layanan anda berada?" />
+        <Heading
+          title="Info Nomoratur"
+          subtitle="Masukan nomoratur dan penggunaan E-Samsat!"
+        />
         <div className="flex flex-col gap-4">
-          <Input
-            id="place"
-            label="Tempat Layanan"
+          <InputNomoratur
+            id="awal"
+            label="No. Awal"
             disabled={isLoading}
             register={register}
             errors={errors}
-            icon={HiOutlineBuildingLibrary}
             required
-            placeholder="Samsat Keliling"
           />
-          <Input
-            id="location"
-            label="Lokasi"
+          <InputNomoratur
+            id="akhir"
+            label="No. Akhir"
             disabled={isLoading}
             register={register}
             errors={errors}
-            icon={IoLocationOutline}
             required
-            placeholder="Jalan Dago"
+          />
+          <Counter
+            title="E-Samsat"
+            subtitle="Jumlah Penggunaan E-Samsat"
+            value={eSamsat}
+            onChange={(value) => setCostumValue("eSamsat", value)}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (step === STEPS.CANCELED) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Nomoratur Batal"
+          subtitle="Jumlah batal dan daftar Nomoraturnya!"
+        />
+        <div className="flex flex-col gap-4">
+          <Counter
+            title="Batal"
+            subtitle="Nomoratur Batal"
+            value={jumlahBatal}
+            onChange={(value) => setCostumValue("jumlahBatal", value)}
+          />
+          <MultipleSelect
+            jumlahBatal={jumlahBatal}
+            listBatal={listBatal}
+            onChange={(value) => setCostumValue("listBatal", value)}
           />
         </div>
       </div>
