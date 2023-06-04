@@ -12,6 +12,10 @@ module.exports = {
         'accent': '#0D7D27',
         'darker': '#073D38',
         'white-prime': '#F2FFFE',
+      },
+      screens: {
+        'tall': { 'raw': '(min-height: 800px)' },
+        // => @media (min-height: 800px) { ... }
       }
     },
   },

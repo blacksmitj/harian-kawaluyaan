@@ -9,13 +9,18 @@ body,
   background-color: #f1f1f1;
 }
 
-.multiselect-container li:hover { 
-  background: #0D7D27 !important; 
-  color: #fff; 
-  cursor: pointer; 
-} 
+@keyframes color-change {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 100%;
+  }
+}
 
-.highlightOption { 
-  background: #0D7D27;
-  color: #ffffff;
+.animate-color-change {
+  animation-name: color-change;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }

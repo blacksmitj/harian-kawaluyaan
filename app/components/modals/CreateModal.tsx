@@ -3,10 +3,10 @@
 import useCreateModal from "@/app/hooks/useCreateModal";
 import Modal from "./Modal";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SubmitHandler, useForm, FieldValues } from "react-hook-form";
 import Heading from "../Heading";
-import { AiFillCalendar, AiOutlineTrademarkCircle } from "react-icons/ai";
+import { AiFillCalendar } from "react-icons/ai";
 import { HiOutlineBuildingLibrary } from "react-icons/hi2";
 import { ImEnter, ImExit } from "react-icons/im";
 import { BsCalendarCheckFill } from "react-icons/bs";
@@ -17,15 +17,17 @@ import { IoLocationOutline } from "react-icons/io5";
 import InputNomoratur from "../inputs/InputNomoratur";
 import Counter from "../inputs/Counter";
 import MultipleSelect from "../inputs/MultipleSelect";
+import ResumeCard from "../card/ResumeCard";
 
 enum STEPS {
   SERVICE = 0,
   LOCATION = 1,
   NOMORATUR = 2,
   CANCELED = 3,
+  RESUME = 4,
 }
 
-export const layanan = [
+export const services = [
   {
     label: "Tahunan",
     icon: AiFillCalendar,
@@ -52,6 +54,7 @@ const CreateModal = () => {
   const createModal = useCreateModal();
   const router = useRouter();
 
+  // const [step, setStep] = useState(STEPS.RESUME);
   const [step, setStep] = useState(STEPS.SERVICE);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -62,27 +65,38 @@ const CreateModal = () => {
     watch,
     formState: { errors },
     reset,
+    getValues,
   } = useForm<FieldValues>({
     defaultValues: {
       service: "",
-      tempat: "",
-      lokasi: "",
+      place: "",
+      address: "",
       nomoraturAwal: 1,
       nomoraturAkhir: 1,
-      eSamsat: 1,
-      jumlahBatal: 1,
+      eSamsat: 0,
+      jumlahBatal: 0,
       listBatal: [],
     },
   });
 
   const service = watch("service");
-  const tempat = watch("tempat");
-  const lokasi = watch("lokasi");
-  const nomoraturAwal = watch("nomoraturAwal");
-  const nomoraturAkhir = watch("nomoraturAkhir");
   const eSamsat = watch("eSamsat");
   const jumlahBatal = watch("jumlahBatal");
   const listBatal = watch("listBatal");
+  const maximalCounter = getValues("akhir") - getValues("awal") + 1;
+
+  const validateNomoratur = useCallback(
+    (value: string) => {
+      if (getValues("awal") >= Number(value)) {
+        return "Nomoratur harus lebih besar dari " + getValues("awal");
+      }
+      if (Number(value) <= 0) {
+        return "Nomoratur tidak boleh kosong atau negative";
+      }
+      return true;
+    },
+    [getValues]
+  );
 
   const setCostumValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -101,7 +115,11 @@ const CreateModal = () => {
   };
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if (step !== STEPS.CANCELED) {
+    if (service === "") {
+      return undefined;
+    }
+
+    if (step !== STEPS.RESUME) {
       return onNext();
     }
 
@@ -110,7 +128,7 @@ const CreateModal = () => {
 
   // Make Action Label Next or Create
   const actionLabel = useMemo(() => {
-    if (step === STEPS.CANCELED) {
+    if (step === STEPS.RESUME) {
       return "Buat Laporan";
     }
     return "Selanjutnya";
@@ -126,13 +144,13 @@ const CreateModal = () => {
 
   // Make Body Content Service
   let bodyContent = (
-    <div className="flex flex-col gap-4 overflow-visible max-h-[60vh]">
+    <div className="flex flex-col gap-4 overflow-y-scroll h-[60vh] tall:h-fit tall:overflow-visible">
       <Heading
         title="Jenis Layanan"
         subtitle="Tentukan jenis layanan anda hari ini!"
       />
       <div className="grid grid-cols-1 gap-3 pb-4">
-        {layanan.map((item) => (
+        {services.map((item) => (
           <div key={item.label} className="col-span-1">
             <ServiceInput
               onClick={(service) => setCostumValue("service", service)}
@@ -142,6 +160,9 @@ const CreateModal = () => {
             />
           </div>
         ))}
+        <p className="text-xs text-rose-400">
+          {!service ? "Pilih jenis layanan hari ini!" : ""}
+        </p>
       </div>
     </div>
   );
@@ -162,8 +183,8 @@ const CreateModal = () => {
             placeholder="Samsat Keliling"
           />
           <Input
-            id="location"
-            label="Lokasi"
+            id="address"
+            label="Alamat"
             disabled={isLoading}
             register={register}
             errors={errors}
@@ -186,7 +207,7 @@ const CreateModal = () => {
         <div className="flex flex-col gap-4">
           <InputNomoratur
             id="awal"
-            label="No. Awal"
+            label="No Awal"
             disabled={isLoading}
             register={register}
             errors={errors}
@@ -194,17 +215,13 @@ const CreateModal = () => {
           />
           <InputNomoratur
             id="akhir"
-            label="No. Akhir"
+            label="No Akhir"
+            awal={getValues("awal")}
+            validate={validateNomoratur}
             disabled={isLoading}
             register={register}
             errors={errors}
             required
-          />
-          <Counter
-            title="E-Samsat"
-            subtitle="Jumlah Penggunaan E-Samsat"
-            value={eSamsat}
-            onChange={(value) => setCostumValue("eSamsat", value)}
           />
         </div>
       </div>
@@ -215,22 +232,55 @@ const CreateModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="Nomoratur Batal"
-          subtitle="Jumlah batal dan daftar Nomoraturnya!"
+          title="Jumlah eSamsat dan yang batal"
+          subtitle="Silahkan mengisi Pengguna E-samsat dan Batal hari ini!"
         />
         <div className="flex flex-col gap-4">
           <Counter
+            title="E-Samsat"
+            subtitle="Jumlah Penggunaan E-Samsat"
+            maximalCounter={maximalCounter}
+            akhir={getValues("akhir")}
+            value={eSamsat}
+            onChange={(value) => setCostumValue("eSamsat", value)}
+          />
+          <hr />
+          <Counter
             title="Batal"
             subtitle="Nomoratur Batal"
+            maximalCounter={maximalCounter}
             value={jumlahBatal}
             onChange={(value) => setCostumValue("jumlahBatal", value)}
           />
           <MultipleSelect
             jumlahBatal={jumlahBatal}
-            listBatal={listBatal}
+            value={listBatal}
+            awal={getValues("awal")}
+            akhir={getValues("akhir")}
             onChange={(value) => setCostumValue("listBatal", value)}
           />
         </div>
+      </div>
+    );
+  }
+
+  if (step === STEPS.RESUME) {
+    bodyContent = (
+      <div className="flex flex-col gap-4 overflow-y-scroll h-[60vh] tall:h-fit tall:overflow-visible">
+        <Heading
+          title="Resume Hari ini!"
+          subtitle="Keseluruhan input anda pada hari ini!"
+        />
+        <ResumeCard
+          awal={getValues("awal")}
+          akhir={getValues("akhir")}
+          eSamsat={eSamsat}
+          jumlahBatal={jumlahBatal}
+          listBatal={listBatal}
+          place={getValues("place")}
+          address={getValues("address")}
+          service={service}
+        />
       </div>
     );
   }
@@ -239,11 +289,13 @@ const CreateModal = () => {
     <Modal
       onClose={createModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
+      // isOpen={true}
       isOpen={createModal.isOpen}
       title="Buat laporan harian!"
       actionLabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.SERVICE ? undefined : onBack}
+      step={step}
       body={bodyContent}
     />
   );

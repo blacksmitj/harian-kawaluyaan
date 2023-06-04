@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { IoMdClose } from "react-icons/io";
-import { BiLogInCircle } from "react-icons/bi";
 import Button from "../Button";
 
 interface ModalProps {
@@ -16,6 +15,7 @@ interface ModalProps {
   disabled?: boolean;
   secondaryAction?: () => void;
   secondaryActionLabel?: string;
+  step: number;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -29,8 +29,10 @@ const Modal: React.FC<ModalProps> = ({
   disabled,
   secondaryAction,
   secondaryActionLabel,
+  step,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
+  const stepsNumber = [0, 1, 2, 3, 4];
 
   useEffect(() => {
     setShowModal(isOpen);
@@ -66,6 +68,12 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <>
+      {/* <div
+        onClick={handleClose}
+        className={`md:hidden bg-red-600 fixed inset-0 max-h-screen z-[0] transition-opacity duration-300
+        ${isOpen ? "block" : "hidden"}
+        `}
+      ></div> */}
       <div className="justify-center flex overflow-x-hidden overflow-y-hidden fixed inset-0 z-50 outline-none md:items-center focus:outline-none bg-neutral-800/70">
         <div className="absolute md:relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 mx-auto h-[95%] lg:h-auto md:h-auto bottom-0">
           {/* CONTENT */}
@@ -105,14 +113,13 @@ const Modal: React.FC<ModalProps> = ({
                   rounded-t
                   justify-center
                   relative
-                  border-b-[1px]
                 "
               >
                 <button
                   onClick={handleClose}
                   className="
                     p-1 border-0
-                    hover:opacity-70
+                    hover:text-accent
                     transition
                     absolute
                     right-9
@@ -122,8 +129,18 @@ const Modal: React.FC<ModalProps> = ({
                 </button>
                 <div className="text-lg font-semibold">{title}</div>
               </div>
+              <div className="flex flex-row mx-6 my-2 gap-2">
+                {stepsNumber.map((item) => (
+                  <div
+                    key={item}
+                    className={`py-0.5 w-full rounded-full duration-500
+                        ${item <= step ? "bg-primary" : "bg-primary/10"}
+                        `}
+                  ></div>
+                ))}
+              </div>
               {/* Body */}
-              <div className="relative p-6 flex-auto">{body}</div>
+              <div className="relative px-6 pt-6 flex-auto">{body}</div>
               {/* Footers */}
               <div className="flex flex-col gap-2 p-6">
                 <div
