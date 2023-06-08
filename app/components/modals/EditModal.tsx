@@ -2,8 +2,8 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
-import useCreateModal from "@/app/hooks/useCreateModal";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import useEditModal from "@/app/hooks/useEditModal";
 import { SubmitHandler, useForm, FieldValues } from "react-hook-form";
 
 import { BiRename } from "react-icons/bi";
@@ -21,7 +21,7 @@ import ResumeCard from "../card/ResumeCard";
 import ServiceInput from "../inputs/ServiceInput";
 import InputNomoratur from "../inputs/InputNomoratur";
 import MultipleSelect from "../inputs/MultipleSelect";
-import useMessage from "@/app/hooks/useMessage";
+import useReportModal from "@/app/hooks/useReportModal";
 
 enum STEPS {
   SERVICE = 0,
@@ -54,10 +54,12 @@ export const services = [
   },
 ];
 
-const CreateModal = () => {
-  const createModal = useCreateModal();
-  const router = useRouter();
+const EditModal = () => {
+  const editModal = useEditModal();
   const [msg, setMsg] = useState("");
+
+  const router = useRouter();
+  const report = useReportModal().report;
 
   const [step, setStep] = useState(STEPS.SERVICE);
   const [isLoading, setIsLoading] = useState(false);
@@ -72,16 +74,20 @@ const CreateModal = () => {
     getValues,
   } = useForm<FieldValues>({
     defaultValues: {
-      service: "",
-      place: "",
-      location: "",
-      started: null,
-      ended: null,
-      eSamsat: 0,
-      canceled: 0,
-      listCanceled: [],
+      service: report.service,
+      place: report.place,
+      location: report.location,
+      started: report.started,
+      ended: report.ended,
+      eSamsat: report.eSamsat,
+      canceled: report.canceled,
+      listCanceled: report.listCanceled,
     },
   });
+
+  useEffect(() => {
+    reset(report);
+  }, [reset, report]);
 
   const service = watch("service");
   const eSamsat = watch("eSamsat");
@@ -134,12 +140,12 @@ const CreateModal = () => {
     setIsLoading(true);
 
     axios
-      .post("/api/report", data)
+      .put(`/api/report/${data.id}`, data)
       .then(() => {
         router.refresh();
         reset();
         setStep(STEPS.SERVICE);
-        createModal.onClose();
+        editModal.onClose();
       })
       .catch(() => {
         setMsg("Tidak dapat menyimpan data!");
@@ -164,6 +170,10 @@ const CreateModal = () => {
     }
     return "Kembali";
   }, [step]);
+
+  if (!editModal.isOpen) {
+    return null;
+  }
 
   // Make Body Content Service
   let bodyContent = (
@@ -309,11 +319,11 @@ const CreateModal = () => {
 
   return (
     <Modal
-      onClose={createModal.onClose}
+      onClose={editModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       disabled={isLoading}
-      isOpen={createModal.isOpen}
-      title="Buat laporan harian!"
+      isOpen={editModal.isOpen}
+      title="Ubah laporan!"
       actionLabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.SERVICE ? undefined : onBack}
@@ -324,4 +334,4 @@ const CreateModal = () => {
   );
 };
 
-export default CreateModal;
+export default EditModal;

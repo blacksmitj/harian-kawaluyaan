@@ -33,7 +33,11 @@ const Button: React.FC<ButtonProps> = ({
         transition
         w-full
         hover:bg-accent
-        ${neutral ? "bg-neutral-50" : "bg-primary"}
+        ${
+          neutral
+            ? "bg-neutral-50 border-[2px] border-darker/10"
+            : "bg-gradient-to-tr from-primary to-accent"
+        }
         ${neutral ? "text-darker" : "text-white-prime"}
         ${neutral ? "hover:text-white" : ""}
         ${small ? "py-1" : "py-3"}
@@ -44,7 +48,7 @@ const Button: React.FC<ButtonProps> = ({
         <Icon
           size={24}
           className="
-						mx-4
+						mr-2
 					"
         />
       )}

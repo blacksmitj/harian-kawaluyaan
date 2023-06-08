@@ -8,7 +8,6 @@ interface CounterProps {
   title: string;
   subtitle: string;
   value: number;
-  akhir?: number;
   maximalCounter?: number;
   onChange: (value: number) => void;
 }
@@ -19,7 +18,6 @@ const Counter: React.FC<CounterProps> = ({
   value,
   onChange,
   maximalCounter,
-  akhir,
 }) => {
   const [counterMessage, setCounterMessage] = useState("");
 

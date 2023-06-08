@@ -10,7 +10,7 @@ interface InputProps {
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
   icon?: IconType;
-  placeholder: string;
+  placeholder?: string;
 }
 
 const Input: React.FC<InputProps> = ({

@@ -15,7 +15,9 @@ interface ModalProps {
   disabled?: boolean;
   secondaryAction?: () => void;
   secondaryActionLabel?: string;
-  step: number;
+  step?: number;
+  isEditable?: boolean;
+  isForm?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -30,6 +32,8 @@ const Modal: React.FC<ModalProps> = ({
   secondaryAction,
   secondaryActionLabel,
   step,
+  isEditable,
+  isForm,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
   const stepsNumber = [0, 1, 2, 3, 4];
@@ -68,13 +72,13 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <>
-      {/* <div
-        onClick={handleClose}
-        className={`md:hidden bg-red-600 fixed inset-0 max-h-screen z-[0] transition-opacity duration-300
-        ${isOpen ? "block" : "hidden"}
-        `}
-      ></div> */}
       <div className="justify-center flex overflow-x-hidden overflow-y-hidden fixed inset-0 z-50 outline-none md:items-center focus:outline-none bg-neutral-800/70">
+        <div
+          onClick={handleClose}
+          className={`md:hidden fixed inset-0 max-h-screen z-[0] transition-opacity duration-300
+          ${isOpen ? "block" : "hidden"}
+        `}
+        ></div>
         <div className="absolute md:relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 mx-auto h-[95%] lg:h-auto md:h-auto bottom-0">
           {/* CONTENT */}
           <div
@@ -129,16 +133,20 @@ const Modal: React.FC<ModalProps> = ({
                 </button>
                 <div className="text-lg font-semibold">{title}</div>
               </div>
-              <div className="flex flex-row mx-6 my-2 gap-2">
-                {stepsNumber.map((item) => (
-                  <div
-                    key={item}
-                    className={`py-0.5 w-full rounded-full duration-500
+              {step !== undefined ? (
+                <div className="flex flex-row mx-6 my-2 gap-2">
+                  {stepsNumber.map((item) => (
+                    <div
+                      key={item}
+                      className={`py-0.5 w-full rounded-full duration-500
                         ${item <= step ? "bg-primary" : "bg-primary/10"}
                         `}
-                  ></div>
-                ))}
-              </div>
+                    ></div>
+                  ))}
+                </div>
+              ) : (
+                ""
+              )}
               {/* Body */}
               <div className="relative px-6 pt-6 flex-auto">{body}</div>
               {/* Footers */}
@@ -160,11 +168,20 @@ const Modal: React.FC<ModalProps> = ({
                       onClick={handleSecondaryAction}
                     />
                   )}
-                  <Button
-                    disabled={disabled}
-                    label={actionLabel}
-                    onClick={handleSubmit}
-                  />
+                  {isEditable && (
+                    <Button
+                      disabled={disabled}
+                      label={actionLabel}
+                      onClick={handleSubmit}
+                    />
+                  )}
+                  {isForm && (
+                    <Button
+                      disabled={disabled}
+                      label={actionLabel}
+                      onClick={handleSubmit}
+                    />
+                  )}
                 </div>
                 {footer}
               </div>

@@ -1,36 +1,35 @@
 "use client";
 
 import useDidMountEffect from "@/app/hooks/useDidMountEffect";
-import { useCallback, useEffect, useState } from "react";
 import Select from "react-select";
 
-export type listBatal = {
+export type listCanceled = {
   value: number;
   label: string;
 };
 
 interface MultipleSelectProps {
-  value?: listBatal[];
-  awal: number;
-  akhir: number;
-  jumlahBatal?: number;
-  onChange: (value: listBatal[]) => void;
+  value?: listCanceled[];
+  started: number;
+  ended: number;
+  canceled?: number;
+  onChange: (value: listCanceled[]) => void;
 }
 
 const MultipleSelect: React.FC<MultipleSelectProps> = ({
   onChange,
   value,
-  awal,
-  akhir,
-  jumlahBatal,
+  started,
+  ended,
+  canceled,
 }) => {
   const isOptionDisabled = () => {
-    if (jumlahBatal === 0) {
+    if (canceled === 0) {
       return true;
     }
 
-    if (value && jumlahBatal) {
-      if (value.length >= jumlahBatal) {
+    if (value && canceled) {
+      if (value.length >= canceled) {
         return true;
       }
     }
@@ -38,12 +37,11 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
   };
 
   useDidMountEffect(() => {
-    console.log("berubah");
     onChange([]);
-  }, [jumlahBatal]);
+  }, [canceled]);
 
   const options: { value: number; label: string }[] = [];
-  for (let i = Math.ceil(awal); i <= Math.floor(akhir); i++) {
+  for (let i = Math.ceil(started); i <= Math.floor(ended); i++) {
     options.push({ value: i, label: "0" + i });
   }
 
@@ -56,7 +54,7 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
         options={options}
         value={value}
         isOptionDisabled={isOptionDisabled}
-        onChange={(value) => onChange(value as listBatal[])}
+        onChange={(value) => onChange(value as listCanceled[])}
         noOptionsMessage={() => "Oops!! data tidak ditemukan."}
         classNames={{
           control: () => "p-1 border-[3px] !important",

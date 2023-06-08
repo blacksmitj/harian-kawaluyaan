@@ -8,7 +8,6 @@ interface InputNomoraturProps {
   required?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
-  awal?: number;
   validate?: any;
 }
 
@@ -20,7 +19,6 @@ const InputNomoratur: React.FC<InputNomoraturProps> = ({
   required,
   register,
   errors,
-  awal = 1,
   validate,
 }) => {
   const errorMessage = errors[id]?.message;

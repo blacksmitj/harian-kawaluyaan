@@ -13,8 +13,17 @@ import Toggle from "./Toggle";
 import ProfileMenu from "./ProfileMenu";
 import { useMediaQuery } from "react-responsive";
 import { useEffect, useRef } from "react";
+import { signOut } from "next-auth/react";
+import { User } from "@prisma/client";
+import { usePathname, useRouter } from "next/navigation";
 
-const SideMenu = () => {
+interface SideMenuProps {
+  currentUser?: User | null;
+}
+
+const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
+  const pathname = usePathname();
+  const router = useRouter();
   let isTabletMid = useMediaQuery({ query: "(max-width: 768px)" });
   const sideMenu = useSideMenu();
 
@@ -60,17 +69,26 @@ const SideMenu = () => {
     <>
       <div
         onClick={sideMenu.onClose}
-        className={`md:hidden fixed inset-0 max-h-screen z-[0] bg-black/50 transition-opacity duration-300
+        className={`md:hidden fixed inset-0 h-screen z-[0] bg-black/50 transition-opacity duration-300
         ${sideMenu.isOpen ? "block" : "hidden"}
         `}
       ></div>
       <motion.div
         variants={SideMenu_animation}
         animate={sideMenu.isOpen ? "open" : "close"}
-        className="w-[16rem] max-w-[16rem] h-screen shadow-md pt-20 md:relative fixed bg-neutral-50 overflow-hidden text-neutral-800"
+        className="w-[16rem] max-w-[16rem] h-screen shadow-md pt-20 md:relative fixed bg-white overflow-hidden text-neutral-800"
       >
         <div className="flex flex-col justify-between h-full">
-          <ProfileMenu name="Andreas Panjaitan" position="Motion Graphic" />
+          <ProfileMenu
+            id={currentUser?.id || ""}
+            name={currentUser?.name || "Hello!"}
+            email={currentUser?.email || "Email belum diisi"}
+            src={
+              currentUser?.image ||
+              `https://api.dicebear.com/6.x/adventurer/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
+                currentUser?.name
+            }
+          />
 
           {/* Main Menu */}
           <div className="flex flex-col h-full">
@@ -79,15 +97,16 @@ const SideMenu = () => {
                 <ButtonSidebar
                   label="Beranda"
                   icon={AiOutlineHome}
-                  onClick={() => {}}
-                  active
+                  onClick={() => router.push("/dashboard")}
+                  active={pathname === "/dashboard" ? true : false}
                 />
               </li>
               <li>
                 <ButtonSidebar
-                  label="Laporanku"
+                  label="Laporan Harian"
                   icon={AiOutlinePaperClip}
-                  onClick={() => {}}
+                  onClick={() => router.push("/dashboard/reports")}
+                  active={pathname === "/dashboard/reports" ? true : false}
                 />
               </li>
             </ul>
@@ -101,14 +120,17 @@ const SideMenu = () => {
                 <ButtonSidebar
                   label="Pengaturan"
                   icon={AiOutlineSetting}
-                  onClick={() => {}}
+                  onClick={() => router.push("/dashboard/settings")}
+                  active={pathname === "/dashboard/settings" ? true : false}
                 />
               </li>
               <li>
                 <ButtonSidebar
                   label="Keluar"
                   icon={AiOutlineLogout}
-                  onClick={() => {}}
+                  onClick={() => {
+                    signOut();
+                  }}
                 />
               </li>
             </ul>
