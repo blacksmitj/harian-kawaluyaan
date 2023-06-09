@@ -1,7 +1,7 @@
-"use client";
+import ReportsClient from "./ReportsClient";
 
-const ReportsPage = () => {
-  return <div>ReportsPage</div>;
+const ReportsPage = async () => {
+  return <ReportsClient />;
 };
 
 export default ReportsPage;
