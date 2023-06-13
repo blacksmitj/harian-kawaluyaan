@@ -84,7 +84,11 @@ const TableUsers: React.FC<TableUserProps> = ({ users }) => {
                         <ToggleActiveUser user={user} />
                       </td>
                       <td className="px-4 py-2 sm:px-6 sm:py-3">
-                        <DeleteUser user={user} />
+                        {user.role !== "ADMIN" ? (
+                          <DeleteUser user={user} />
+                        ) : (
+                          "Hellow Master ^^"
+                        )}
                       </td>
                     </tr>
                   ))}

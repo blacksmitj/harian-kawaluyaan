@@ -15,6 +15,8 @@ const Avatar: React.FC<AvatarProps> = ({ src, size }) => {
       height={size || 45}
       width={size || 45}
       src={src}
+      loading="lazy"
+      priority={false}
     />
   );
 };

@@ -28,7 +28,7 @@ body,
   width: 350px;
   height: 350px;
   background: linear-gradient(to bottom, #0D7D27 50%, #0C7066 75%);
-  filter: blur(100px);
+  filter: blur(200px);
 }
 
 

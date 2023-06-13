@@ -16,6 +16,7 @@ import { useEffect, useRef } from "react";
 import { signOut } from "next-auth/react";
 import { User } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
+import { BiGroup } from "react-icons/bi";
 
 interface SideMenuProps {
   currentUser?: User | null;
@@ -26,6 +27,12 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
   const router = useRouter();
   let isTabletMid = useMediaQuery({ query: "(max-width: 768px)" });
   const sideMenu = useSideMenu();
+  const isAdmin = () => {
+    if (currentUser?.role !== "ADMIN") {
+      return false;
+    }
+    return true;
+  };
 
   useEffect(() => {
     if (isTabletMid) {
@@ -115,16 +122,18 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
 
           <div className="flex flex-col">
             <ul className="whitespace-pre px-2.5 text-[0.9rem] py-5 flex flex-col font-medium overflow-x-hidden gap-1">
-              {/* Pengaturan */}
+              {/* ADMIN MENU */}
               <hr className="mt-8" />
-              <li>
-                <ButtonSidebar
-                  label="Pengaturan"
-                  icon={AiOutlineSetting}
-                  onClick={() => router.push("/dashboard/settings")}
-                  active={pathname === "/dashboard/settings" ? true : false}
-                />
-              </li>
+              {isAdmin() && (
+                <li>
+                  <ButtonSidebar
+                    label="Kelola User"
+                    icon={BiGroup}
+                    onClick={() => router.push("/dashboard/users")}
+                    active={pathname === "/dashboard/settings" ? true : false}
+                  />
+                </li>
+              )}
               <li>
                 <ButtonSidebar
                   label="Keluar"

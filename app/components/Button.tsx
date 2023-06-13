@@ -33,23 +33,14 @@ const Button: React.FC<ButtonProps> = ({
         transition
         w-full
         hover:bg-accent
-        ${
-          neutral ? "bg-neutral-50" : "bg-gradient-to-tr from-primary to-darker"
-        }
-        ${neutral ? "text-darker" : "text-white-prime"}
+        ${neutral ? "bg-neutral-50/80" : "bg-primary"}
+        ${neutral ? "text-darker" : "text-white"}
         ${neutral ? "hover:text-white" : ""}
         ${small ? "py-1" : "py-3"}
         ${small ? "text-sm" : "text-md"}
       `}
     >
-      {Icon && (
-        <Icon
-          size={24}
-          className="
-						mr-2
-					"
-        />
-      )}
+      {Icon && <Icon size={24} className="mr-2 -ml-3" />}
       {label}
     </button>
   );

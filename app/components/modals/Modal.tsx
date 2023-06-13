@@ -80,7 +80,7 @@ const Modal: React.FC<ModalProps> = ({
           ${isOpen ? "block" : "hidden"}
         `}
         ></div>
-        <div className="absolute md:relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 mx-auto h-[95%] lg:h-auto md:h-auto bottom-0">
+        <div className="absolute md:relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 mx-auto h-[100%] lg:h-auto md:h-auto bottom-0">
           {/* CONTENT */}
           <div
             className={`

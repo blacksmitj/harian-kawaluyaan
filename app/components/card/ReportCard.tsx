@@ -8,28 +8,16 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import useReportModal from "@/app/hooks/useReportModal";
 import { useCallback } from "react";
+import SeenButton from "../SeenButton";
 
 export interface ReportCardProps {
   data: Report & {
     user: User;
   };
+  currentUser?: User;
 }
 
-const ReportCard: React.FC<ReportCardProps> = ({ data }) => {
-  const reportModal = useReportModal();
-
-  const onSee = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-      reportModal.onOpen(),
-        reportModal.setReport({
-          ...data,
-          listCanceled: JSON.parse(data.listCanceled),
-        });
-    },
-    [reportModal, data]
-  );
-
+const ReportCard: React.FC<ReportCardProps> = ({ data, currentUser }) => {
   return (
     <div className="bg-white w-full min-w-[300px] flex flex-col p-4 rounded-2xl gap-1 shadow-lg shadow-darker/5 border-[1px] border-primary/10">
       {/* User Section */}
@@ -74,13 +62,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ data }) => {
           {data.place + " " + data.location}
         </span>
         <div className="text-xs">
-          <button
-            onClick={onSee}
-            className="rounded-xl py-1 px-4 flex justify-center items-center gap-2 bg-neutral-50 hover:bg-accent hover:text-white text-darker duration-300"
-          >
-            <AiOutlineEye size={20} />
-            Lihat
-          </button>
+          <SeenButton data={data} currentUser={currentUser} />
         </div>
       </div>
     </div>

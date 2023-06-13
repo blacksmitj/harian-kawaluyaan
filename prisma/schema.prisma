@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
 model User {
   id              String    @id @default(cuid()) @map("_id")
   name            String?
@@ -20,6 +25,8 @@ model User {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   verifiedAccount Boolean   @default(false)
+  role            UserRole  @default(USER)
+  seenIds         String[]
 
   laporan Report[]
 }
@@ -33,7 +40,6 @@ model Report {
   ended        Int
   eSamsat      Int
   canceled     Int
-  seen         Boolean  @default(false)
   listCanceled String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

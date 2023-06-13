@@ -19,9 +19,7 @@ const Dashboard = async ({ searchParams }: DashboardProps) => {
   const reports = await getReports(searchParams);
 
   if (!currentUser) {
-    if (!currentUser) {
-      return <EmptyState title="Unauthorized" subtitle="Please Login" />;
-    }
+    return <EmptyState title="Unauthorized" subtitle="Please Login" />;
   }
 
   if (reports.length === 0) {
@@ -46,7 +44,13 @@ const Dashboard = async ({ searchParams }: DashboardProps) => {
           <EditModal />
           <ButtonCreate verified={currentUser.verifiedAccount} />
           {reports.map((report) => {
-            return <ReportCard key={report.id} data={report} />;
+            return (
+              <ReportCard
+                key={report.id}
+                data={report}
+                currentUser={currentUser}
+              />
+            );
           })}
         </div>
       </div>

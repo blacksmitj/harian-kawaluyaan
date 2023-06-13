@@ -55,12 +55,11 @@ const LoginPage = () => {
   }, [router]);
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-full sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 flex flex-row">
-        <div className="w-3/4 bg-primary rounded-l-xl sm:block hidden">
-          gambar
-        </div>
-        <div className="bg-white w-full min-w-[30vh] sm:rounded-r-xl items-center flex justify-center px-8 py-20 text-darker sm:h-fit h-screen">
+    <div className="flex justify-center items-center h-screen bg-white-prime">
+      <div className="w-full sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 flex flex-row shadow-2xl shadow-accent/20">
+        <div className="absolute -right-0 circle rounded-full bottom-4"></div>
+        <div className="w-3/4 bg-primary rounded-l-2xl sm:block hidden"></div>
+        <div className="bg-white/70 backdrop-blur-[100px] w-full min-w-[30vh] sm:rounded-r-2xl rounded-none items-center flex justify-center px-8 py-20 text-darker sm:h-fit h-screen">
           <div className="flex flex-col gap-6">
             <Heading
               title="Selamat datang!"

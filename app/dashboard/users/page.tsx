@@ -1,16 +1,20 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import SettingsClient from "./SettingsClient";
+import SettingsClient from "./UsersClient";
 import EmptyState from "@/app/components/EmptyState";
 import { IUsersParams, getUsers } from "@/app/actions/getUsers";
 import DeleteUser from "@/app/components/tables/DeleteUser";
 import DeleteUserModal from "@/app/components/modals/DeleteUsertModal";
 
-interface SettingsPageProps {
+interface UsersPageProps {
   searchParams: IUsersParams;
 }
 
-const SettingsPage = async ({ searchParams }: SettingsPageProps) => {
+const UsersPage = async ({ searchParams }: UsersPageProps) => {
   const currentUser = await getCurrentUser();
+
+  if (currentUser?.role !== "ADMIN") {
+    return <EmptyState title="Unauthorized" subtitle="Anda Bukan Admin" />;
+  }
 
   if (!currentUser) {
     return <EmptyState title="Unauthorized" subtitle="Please Login" />;
@@ -30,4 +34,4 @@ const SettingsPage = async ({ searchParams }: SettingsPageProps) => {
   );
 };
 
-export default SettingsPage;
+export default UsersPage;
