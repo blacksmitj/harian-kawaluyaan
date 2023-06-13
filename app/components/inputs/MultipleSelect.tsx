@@ -50,7 +50,7 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
       <Select
         placeholder="ex.05311640"
         isMulti
-        isClearable
+        isClearable={false}
         options={options}
         value={value}
         isOptionDisabled={isOptionDisabled}

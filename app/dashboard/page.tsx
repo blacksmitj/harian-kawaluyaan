@@ -1,26 +1,38 @@
-import getCurrentUser from "@/app/actions/getCurrentUser";
 import { IReportsParams, getReports } from "@/app/actions/getReports";
 import Container from "@/app/components/Container";
 import EmptyState from "@/app/components/EmptyState";
 import Heading from "@/app/components/Heading";
 import ReportCard from "@/app/components/card/ReportCard";
 import ButtonCreate from "../components/ButtonCreate";
-import ReportModal from "../components/modals/ReportModal";
 import CreateModal from "../components/modals/CreateModal";
 import EditModal from "../components/modals/EditModal";
+import DeleteModal from "../components/modals/DeleteReportModal";
+import getCurrentUser from "../actions/getCurrentUser";
+import { useRouter } from "next/navigation";
 
 interface DashboardProps {
   searchParams: IReportsParams;
 }
 
 const Dashboard = async ({ searchParams }: DashboardProps) => {
+  const currentUser = await getCurrentUser();
   const reports = await getReports(searchParams);
+
+  if (!currentUser) {
+    if (!currentUser) {
+      return <EmptyState title="Unauthorized" subtitle="Please Login" />;
+    }
+  }
 
   if (reports.length === 0) {
     return (
       <>
-        <EmptyState />
-        <ButtonCreate />
+        <EmptyState
+          title="Laporan tidak ada"
+          subtitle="coba untuk mengisi data laporan"
+        />
+        <CreateModal />
+        <ButtonCreate verified={currentUser.verifiedAccount} />
       </>
     );
   }
@@ -32,7 +44,7 @@ const Dashboard = async ({ searchParams }: DashboardProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 mt-6 pb-20">
           <CreateModal />
           <EditModal />
-          <ButtonCreate />
+          <ButtonCreate verified={currentUser.verifiedAccount} />
           {reports.map((report) => {
             return <ReportCard key={report.id} data={report} />;
           })}

@@ -34,9 +34,7 @@ const Button: React.FC<ButtonProps> = ({
         w-full
         hover:bg-accent
         ${
-          neutral
-            ? "bg-neutral-50 border-[2px] border-darker/10"
-            : "bg-gradient-to-tr from-primary to-accent"
+          neutral ? "bg-neutral-50" : "bg-gradient-to-tr from-primary to-darker"
         }
         ${neutral ? "text-darker" : "text-white-prime"}
         ${neutral ? "hover:text-white" : ""}

@@ -8,12 +8,12 @@ const Logo = () => {
 
   return (
     <Image
-      onClick={() => router.push("/")}
+      onClick={() => router.push("/dashboard")}
       alt="Logo"
-      className="cursor-pointer -mx-4"
+      className="cursor-pointer p-2"
       height="150"
       width="150"
-      src="/images/p3dw-kawaluyaan-black.png"
+      src="/images/p3dw-kawaluyaan.png"
     />
   );
 };

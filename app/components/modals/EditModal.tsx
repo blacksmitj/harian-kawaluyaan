@@ -158,7 +158,7 @@ const EditModal = () => {
   // Make Action Label Next or Create
   const actionLabel = useMemo(() => {
     if (step === STEPS.RESUME) {
-      return "Buat Laporan";
+      return "Ubah Laporan";
     }
     return "Selanjutnya";
   }, [step]);

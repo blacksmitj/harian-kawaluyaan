@@ -69,23 +69,24 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
     <>
       <div
         onClick={sideMenu.onClose}
-        className={`md:hidden fixed inset-0 h-screen z-[0] bg-black/50 transition-opacity duration-300
+        className={`md:hidden fixed inset-0 h-screen bg-black/50 transition-opacity duration-300 z-[1]
         ${sideMenu.isOpen ? "block" : "hidden"}
         `}
       ></div>
       <motion.div
         variants={SideMenu_animation}
         animate={sideMenu.isOpen ? "open" : "close"}
-        className="w-[16rem] max-w-[16rem] h-screen shadow-md pt-20 md:relative fixed bg-white overflow-hidden text-neutral-800"
+        className="w-[16rem] max-w-[16rem] h-screen shadow-md pt-20 md:relative fixed bg-white overflow-hidden text-neutral-800 z-10"
       >
         <div className="flex flex-col justify-between h-full">
           <ProfileMenu
-            id={currentUser?.id || ""}
-            name={currentUser?.name || "Hello!"}
-            email={currentUser?.email || "Email belum diisi"}
+            id={currentUser?.id}
+            name={currentUser?.name}
+            email={currentUser?.email}
+            verified={currentUser?.verifiedAccount}
             src={
               currentUser?.image ||
-              `https://api.dicebear.com/6.x/adventurer/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
+              `https://api.dicebear.com/6.x/big-smile/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
                 currentUser?.name
             }
           />
@@ -103,7 +104,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
               </li>
               <li>
                 <ButtonSidebar
-                  label="Laporan Harian"
+                  label="Laporan"
                   icon={AiOutlinePaperClip}
                   onClick={() => router.push("/dashboard/reports")}
                   active={pathname === "/dashboard/reports" ? true : false}

@@ -50,7 +50,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ currentUserId }) => {
         <Avatar
           src={
             report.user.image ||
-            `https://api.dicebear.com/6.x/adventurer/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
+            `https://api.dicebear.com/6.x/big-smile/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
               report.user.name
           }
           size={55}
@@ -63,16 +63,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ currentUserId }) => {
           </span>
         </div>
       </div>
-      <ResumeCard
-        started={report.started}
-        ended={report.ended}
-        eSamsat={report.eSamsat}
-        canceled={report.canceled}
-        listCanceled={report.listCanceled}
-        place={report.place}
-        location={report.location}
-        service={report.service}
-      />
+      <ResumeCard report={report} />
     </div>
   );
 
@@ -82,7 +73,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ currentUserId }) => {
       onSubmit={() => onEdit()}
       disabled={isLoading}
       isOpen={reportModal.isOpen}
-      title={"Laporan Harian"}
+      title={"Resume Laporan"}
       actionLabel="Ubah Laporan"
       isEditable={isEditable()}
       secondaryActionLabel="Kembali"

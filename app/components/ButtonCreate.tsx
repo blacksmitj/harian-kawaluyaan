@@ -4,12 +4,20 @@ import { useCallback } from "react";
 import { BsClipboardPlusFill } from "react-icons/bs";
 import useCreateModal from "../hooks/useCreateModal";
 
-const ButtonCreate = () => {
+interface ButtonCreateProps {
+  verified: boolean;
+}
+
+const ButtonCreate: React.FC<ButtonCreateProps> = ({ verified }) => {
   const createModal = useCreateModal();
 
   const onCreate = useCallback(() => {
     createModal.onOpen();
   }, [createModal]);
+
+  if (!verified) {
+    return null;
+  }
 
   return (
     <div className="fixed m-3 right-5 bottom-5 ">

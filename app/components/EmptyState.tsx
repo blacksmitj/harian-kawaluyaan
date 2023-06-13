@@ -11,8 +11,8 @@ interface EmptyState {
 }
 
 const EmptyState: React.FC<EmptyState> = ({
-  title = "No Exact Mathces",
-  subtitle = "Try changing or removing some of your fitlers",
+  title = "Tidak ada data!",
+  subtitle = "Coba untuk isi data kembali",
   showReset,
 }) => {
   const router = useRouter();

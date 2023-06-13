@@ -89,6 +89,13 @@ const CreateModal = () => {
   const listCanceled = watch("listCanceled");
   const maximalCounter = getValues("ended") - getValues("started") + 1;
 
+  const setMessage = useCallback(() => {
+    if (service) {
+      return "";
+    }
+    return "Layanan Harus dipilih";
+  }, [service]);
+
   const validateNomoratur = useCallback(
     (value: string) => {
       if (getValues("started") >= Number(value)) {
@@ -172,9 +179,7 @@ const CreateModal = () => {
         title="Jenis Layanan"
         subtitle="Tentukan jenis layanan anda hari ini!"
       />
-      <p className="text-xs text-rose-400">
-        {!service ? "Pilih jenis layanan hari ini!" : ""}
-      </p>
+      <p className="text-xs text-rose-400">{setMessage()}</p>
       <div className="grid grid-cols-1 gap-3 pb-4">
         {services.map((item) => (
           <div key={item.label} className="col-span-1">

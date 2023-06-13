@@ -73,6 +73,7 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <>
       <div className="justify-center flex overflow-x-hidden overflow-y-hidden fixed inset-0 z-50 outline-none md:items-center focus:outline-none bg-neutral-800/70">
+        {/* black screen */}
         <div
           onClick={handleClose}
           className={`md:hidden fixed inset-0 max-h-screen z-[0] transition-opacity duration-300
@@ -113,7 +114,7 @@ const Modal: React.FC<ModalProps> = ({
                 className="
                   flex
                   items-center
-                  p-6
+                  p-5
                   rounded-t
                   justify-center
                   relative
@@ -131,7 +132,7 @@ const Modal: React.FC<ModalProps> = ({
                 >
                   <IoMdClose size={16} />
                 </button>
-                <div className="text-lg font-semibold">{title}</div>
+                <div className="text-base font-semibold">{title}</div>
               </div>
               {step !== undefined ? (
                 <div className="flex flex-row mx-6 my-2 gap-2">
@@ -148,7 +149,13 @@ const Modal: React.FC<ModalProps> = ({
                 ""
               )}
               {/* Body */}
-              <div className="relative px-6 pt-6 flex-auto">{body}</div>
+              <div
+                className={`relative px-6 flex-auto
+              ${step !== undefined ? "pt-6" : ""}
+              `}
+              >
+                {body}
+              </div>
               {/* Footers */}
               <div className="flex flex-col gap-2 p-6">
                 <div
