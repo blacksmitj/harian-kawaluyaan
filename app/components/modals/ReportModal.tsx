@@ -8,12 +8,14 @@ import Avatar from "../Avatar";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import useEditModal from "@/app/hooks/useEditModal";
+import { User } from "@prisma/client";
+import ProfileMenu from "../ProfileMenu";
 
 interface ReportModalProps {
-  currentUserId?: string;
+  currentUser?: User;
 }
 
-const ReportModal: React.FC<ReportModalProps> = ({ currentUserId }) => {
+const ReportModal: React.FC<ReportModalProps> = ({ currentUser }) => {
   const reportModal = useReportModal();
   const editModal = useEditModal();
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +38,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ currentUserId }) => {
   const report = reportModal.report;
 
   const isEditable = () => {
-    if (currentUserId === report.user.id) {
+    if (currentUser?.id === report.user.id && currentUser.verifiedAccount) {
       return true;
     }
 
@@ -44,24 +46,19 @@ const ReportModal: React.FC<ReportModalProps> = ({ currentUserId }) => {
   };
 
   const bodyContent = (
-    <div className="flex flex-col gap-4 overflow-y-scroll h-[60vh] tall:h-fit tall:overflow-visible">
-      {/* User Section */}
-      <div className="flex flex-col gap-4 items-center mb-4">
-        <Avatar
+    <div className="flex flex-col gap-4 h-full tall:h-fit tall:overflow-visible">
+      <div className="mt-2">
+        <ProfileMenu
+          id={report.user.id}
+          name={report.user.name}
+          email={report.user.email}
+          verified={report.user.verifiedAccount}
           src={
             report.user.image ||
             `https://api.dicebear.com/6.x/big-smile/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
               report.user.name
           }
-          size={55}
         />
-        <div className="flex flex-col text-center">
-          <span className="text-xl font-bold">{report.user.name}</span>
-          <span className="text-xs font-light">
-            {format(report.createdAt, "cccc, dd MMMM yyyy", { locale: id }) ||
-              "Tanggal tidak ditemukan"}
-          </span>
-        </div>
       </div>
       <ResumeCard report={report} />
     </div>

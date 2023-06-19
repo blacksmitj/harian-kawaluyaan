@@ -7,18 +7,15 @@ import TableReports from "@/app/components/tables/TableReports";
 import { Report, User } from "@prisma/client";
 
 interface ReportClientProps {
-  reports: (Report & {
-    user: User;
-  })[];
+  currentUser: User;
 }
 
-const ReportsClient: React.FC<ReportClientProps> = ({ reports }) => {
+const ReportsClient: React.FC<ReportClientProps> = ({ currentUser }) => {
   return (
     <Container>
       <div className="flex flex-col text-darker pt-20 gap-4">
         <Heading title="Laporan" subtitle="Seluruh histori laporan anda!" />
-        {/* <Breadcumb /> */}
-        <TableReports reports={reports} />
+        <TableReports currentUser={currentUser} />
       </div>
     </Container>
   );

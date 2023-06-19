@@ -20,9 +20,9 @@ const ButtonSidebar: React.FC<ButtonSidebarProps> = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`p-2.5 flex rounded-md gap-6 items-center disabled:opacity-70 disabled:cursor-not-allowed hover:text-white-prime duration-300 w-full
+      className={`p-2.5 flex rounded-md gap-6 items-center disabled:opacity-70 disabled:cursor-not-allowed hover:text-white duration-300 w-full
         ${active ? "bg-gradient-to-tr from-primary to-darker" : "bg-none"} 
-        ${active ? "text-white-prime" : "text-darker"} 
+        ${active ? "text-white cursor-default" : "text-darker"} 
         ${active ? "hover:bg-accent" : "hover:bg-accent"} 
       `}
     >

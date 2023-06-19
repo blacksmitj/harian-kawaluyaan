@@ -17,12 +17,6 @@ body,
   }
 }
 
-.animate-color-change {
-  animation-name: color-change;
-  animation-duration: 3s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
 
 .circle {
   width: 350px;
@@ -30,7 +24,6 @@ body,
   background: linear-gradient(to bottom, #0D7D27 50%, #0C7066 75%);
   filter: blur(200px);
 }
-
 
 .app-title {
   background: linear-gradient(45deg, #0C7066, #0D7D27);

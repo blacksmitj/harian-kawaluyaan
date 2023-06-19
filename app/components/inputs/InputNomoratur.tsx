@@ -42,7 +42,7 @@ const InputNomoratur: React.FC<InputNomoraturProps> = ({
           })}
           type={type}
           className={`bg-gray-50 border-[3px] border-gray-300 font-medium rounded-lg block w-full p-2 pl-8
-          ${errors[id] ? "border-red-200" : "border-primary/10"}
+          ${errors[id] ? "border-red-200" : "border-emerald-600/10"}
           ${errors[id] ? "focus:outline-red-400" : "focus:outline-primary/60"}
           `}
           placeholder="5311640"

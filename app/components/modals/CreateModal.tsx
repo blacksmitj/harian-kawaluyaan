@@ -1,8 +1,8 @@
 "use client";
 
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import useCreateModal from "@/app/hooks/useCreateModal";
 import { SubmitHandler, useForm, FieldValues } from "react-hook-form";
 
@@ -21,7 +21,7 @@ import ResumeCard from "../card/ResumeCard";
 import ServiceInput from "../inputs/ServiceInput";
 import InputNomoratur from "../inputs/InputNomoratur";
 import MultipleSelect from "../inputs/MultipleSelect";
-import useMessage from "@/app/hooks/useMessage";
+import useReportModal from "@/app/hooks/useReportModal";
 
 enum STEPS {
   SERVICE = 0,
@@ -56,7 +56,10 @@ export const services = [
 
 const CreateModal = () => {
   const createModal = useCreateModal();
+  const reportModal = useReportModal();
+
   const router = useRouter();
+  const pathName = usePathname() || "/dashboard";
   const [msg, setMsg] = useState("");
 
   const [step, setStep] = useState(STEPS.SERVICE);
@@ -89,13 +92,6 @@ const CreateModal = () => {
   const listCanceled = watch("listCanceled");
   const maximalCounter = getValues("ended") - getValues("started") + 1;
 
-  const setMessage = useCallback(() => {
-    if (service) {
-      return "";
-    }
-    return "Layanan Harus dipilih";
-  }, [service]);
-
   const validateNomoratur = useCallback(
     (value: string) => {
       if (getValues("started") >= Number(value)) {
@@ -121,9 +117,9 @@ const CreateModal = () => {
     setStep((value) => value - 1);
   };
 
-  const onNext = () => {
+  const onNext = useCallback(() => {
     setStep((value) => value + 1);
-  };
+  }, []);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (isLoading) {
@@ -131,6 +127,7 @@ const CreateModal = () => {
     }
 
     if (service === "") {
+      setMsg("Jenis layanan tidak boleh kosong!");
       return undefined;
     }
 
@@ -143,7 +140,7 @@ const CreateModal = () => {
     axios
       .post("/api/report", data)
       .then(() => {
-        router.refresh();
+        reportModal.onChange();
         reset();
         setStep(STEPS.SERVICE);
         createModal.onClose();
@@ -174,12 +171,12 @@ const CreateModal = () => {
 
   // Make Body Content Service
   let bodyContent = (
-    <div className="flex flex-col gap-4 overflow-y-scroll h-[60vh] tall:h-fit tall:overflow-visible">
+    <div className="flex flex-col gap-4 h-full tall:h-fit tall:overflow-visible">
       <Heading
         title="Jenis Layanan"
         subtitle="Tentukan jenis layanan anda hari ini!"
       />
-      <p className="text-xs text-rose-400">{setMessage()}</p>
+      <p className="text-xs text-rose-400">{msg}</p>
       <div className="grid grid-cols-1 gap-3 pb-4">
         {services.map((item) => (
           <div key={item.label} className="col-span-1">
@@ -292,7 +289,7 @@ const CreateModal = () => {
 
   if (step === STEPS.RESUME) {
     bodyContent = (
-      <div className="flex flex-col gap-4 overflow-y-scroll h-[60vh] tall:h-fit tall:overflow-visible">
+      <div className="flex flex-col gap-4 h-full tall:h-fit tall:overflow-visible">
         <Heading
           title="Resume Hari ini!"
           subtitle="Keseluruhan input anda pada hari ini!"

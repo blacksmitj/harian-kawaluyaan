@@ -10,7 +10,7 @@ import {
 } from "react-icons/ai";
 import ButtonSidebar from "../ButtonSidebar";
 import Toggle from "./Toggle";
-import ProfileMenu from "./ProfileMenu";
+import ProfileMenu from "../ProfileMenu";
 import { useMediaQuery } from "react-responsive";
 import { useEffect, useRef } from "react";
 import { signOut } from "next-auth/react";
@@ -40,7 +40,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
     } else {
       sideMenu.isOpen === true;
     }
-  }, [isTabletMid, sideMenu]);
+  }, [isTabletMid, sideMenu.isOpen]);
 
   const SideMenu_animation = isTabletMid
     ? {
@@ -86,17 +86,19 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
         className="w-[16rem] max-w-[16rem] h-screen shadow-md pt-20 md:relative fixed bg-white overflow-hidden text-neutral-800 z-10"
       >
         <div className="flex flex-col justify-between h-full">
-          <ProfileMenu
-            id={currentUser?.id}
-            name={currentUser?.name}
-            email={currentUser?.email}
-            verified={currentUser?.verifiedAccount}
-            src={
-              currentUser?.image ||
-              `https://api.dicebear.com/6.x/big-smile/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
-                currentUser?.name
-            }
-          />
+          <div className="p-3">
+            <ProfileMenu
+              id={currentUser?.id}
+              name={currentUser?.name}
+              email={currentUser?.email}
+              verified={currentUser?.verifiedAccount}
+              src={
+                currentUser?.image ||
+                `https://api.dicebear.com/6.x/big-smile/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
+                  currentUser?.name
+              }
+            />
+          </div>
 
           {/* Main Menu */}
           <div className="flex flex-col h-full">
@@ -130,7 +132,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
                     label="Kelola User"
                     icon={BiGroup}
                     onClick={() => router.push("/dashboard/users")}
-                    active={pathname === "/dashboard/settings" ? true : false}
+                    active={pathname === "/dashboard/users" ? true : false}
                   />
                 </li>
               )}

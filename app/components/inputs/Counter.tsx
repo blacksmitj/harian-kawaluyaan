@@ -25,6 +25,7 @@ const Counter: React.FC<CounterProps> = ({
     if (maximalCounter && maximalCounter < value) {
       onChange(0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [maximalCounter]);
 
   const onAdd = useCallback(() => {
@@ -64,7 +65,7 @@ const Counter: React.FC<CounterProps> = ({
               h-10
               rounded-full
               border-[3px]
-              border-primary/10
+              border-emerald-600/10
               flex
               items-center
               justify-center
@@ -85,7 +86,7 @@ const Counter: React.FC<CounterProps> = ({
               h-10
               rounded-full
               border-[3px]
-              border-primary/10
+              border-emerald-600/10
               flex
               items-center
               justify-center

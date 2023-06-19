@@ -29,7 +29,7 @@ const UsersPage = async ({ searchParams }: UsersPageProps) => {
   return (
     <>
       <DeleteUserModal />
-      <SettingsClient users={users} />
+      <SettingsClient />
     </>
   );
 };

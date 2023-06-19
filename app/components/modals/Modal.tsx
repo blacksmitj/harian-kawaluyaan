@@ -80,7 +80,7 @@ const Modal: React.FC<ModalProps> = ({
           ${isOpen ? "block" : "hidden"}
         `}
         ></div>
-        <div className="absolute md:relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 mx-auto h-[100%] lg:h-auto md:h-auto bottom-0">
+        <div className="absolute md:relative w-full md:w-4/6 lg:w-3/6 xl:w-2/5 mx-auto h-[95%] xl:h-auto bottom-0">
           {/* CONTENT */}
           <div
             className={`
@@ -96,17 +96,16 @@ const Modal: React.FC<ModalProps> = ({
               className="
                   translate
                   h-full
-                  lg:h-auto
-                  md:h-auto
+                  
                   border-0
                   rounded-lg
                   relative
                   flex
                   flex-col
                   w-full
-                  bg-white
                   outline-none
                   focus:outline-none
+                  bg-white
                 "
             >
               {/* Header */}
@@ -132,7 +131,7 @@ const Modal: React.FC<ModalProps> = ({
                 >
                   <IoMdClose size={16} />
                 </button>
-                <div className="text-base font-semibold">{title}</div>
+                <div className="font-semibold text-sm">{title}</div>
               </div>
               {step !== undefined ? (
                 <div className="flex flex-row mx-6 my-2 gap-2">
@@ -150,7 +149,7 @@ const Modal: React.FC<ModalProps> = ({
               )}
               {/* Body */}
               <div
-                className={`relative px-6 flex-auto
+                className={`px-6 flex-auto overflow-y-scroll
               ${step !== undefined ? "pt-6" : ""}
               `}
               >
@@ -165,6 +164,7 @@ const Modal: React.FC<ModalProps> = ({
                     items-center
                     gap-4
                     w-full
+                    bottom-0
                   "
                 >
                   {secondaryAction && secondaryActionLabel && (

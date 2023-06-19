@@ -56,9 +56,9 @@ export const services = [
 
 const EditModal = () => {
   const editModal = useEditModal();
+  const reportModal = useReportModal();
   const [msg, setMsg] = useState("");
 
-  const router = useRouter();
   const report = useReportModal().report;
 
   const [step, setStep] = useState(STEPS.SERVICE);
@@ -142,7 +142,7 @@ const EditModal = () => {
     axios
       .put(`/api/report/${data.id}`, data)
       .then(() => {
-        router.refresh();
+        reportModal.onChange();
         reset();
         setStep(STEPS.SERVICE);
         editModal.onClose();

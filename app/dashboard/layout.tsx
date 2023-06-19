@@ -19,7 +19,7 @@ export default async function DashboardLayout({
   return (
     <>
       <Navbar />
-      <ReportModal currentUserId={currentUser?.id} />
+      <ReportModal currentUser={currentUser} />
       <div className="flex">
         <SideMenu currentUser={currentUser} />
         <div className="flex-1 mx-auto h-screen overflow-y-scroll">

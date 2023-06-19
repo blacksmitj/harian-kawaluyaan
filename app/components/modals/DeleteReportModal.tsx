@@ -6,9 +6,11 @@ import Modal from "./Modal";
 import ResumeCard from "../card/ResumeCard";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import useReportModal from "@/app/hooks/useReportModal";
 
 const DeleteReportModal = () => {
   const deleteReportModal = useDeleteReportModal();
+  const reportModal = useReportModal();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const report = deleteReportModal.report;
@@ -19,7 +21,9 @@ const DeleteReportModal = () => {
       .delete(`/api/report/${report.id}`)
       .then(() => {
         deleteReportModal.onClose();
+        reportModal.onChange();
         router.refresh();
+        // router.replace("/dashboard/reports");
       })
       .catch((error) => {
         console.log(error?.response?.data?.error);

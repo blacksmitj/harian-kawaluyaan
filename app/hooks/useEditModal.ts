@@ -6,10 +6,10 @@ interface EditModalStore {
   onClose: () => void;
 }
 
-const useCreateModal = create<EditModalStore>((set) => ({
+const useEditModal = create<EditModalStore>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
 }));
 
-export default useCreateModal;
+export default useEditModal;

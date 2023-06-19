@@ -12,22 +12,9 @@ export interface SeenButtonProps {
 }
 
 const SeenButton: React.FC<SeenButtonProps> = ({ data, currentUser }) => {
-  const reportModal = useReportModal();
   let dataReport = data;
 
-  // const onSee = useCallback(
-  //   (e: React.MouseEvent<HTMLButtonElement>) => {
-  //     e.stopPropagation();
-  //     reportModal.onOpen(),
-  //       reportModal.setReport({
-  //         ...data,
-  //         listCanceled: JSON.parse(data.listCanceled),
-  //       });
-  //   },
-  //   [reportModal, data]
-  // );
-
-  const { hasSeen, seenChecked } = useSeen({
+  const { hasSeen, seenChecked, isLoading } = useSeen({
     dataReport,
     currentUser,
   });
@@ -35,7 +22,8 @@ const SeenButton: React.FC<SeenButtonProps> = ({ data, currentUser }) => {
   return (
     <button
       onClick={seenChecked}
-      className={`rounded-xl py-1 px-4 flex justify-center items-center gap-2 duration-300
+      disabled={isLoading}
+      className={`rounded-xl py-1 px-4 flex justify-center items-center gap-2 duration-300 disabled:opacity-25
       ${
         hasSeen ? "bg-neutral-50 hover:bg-accent" : "bg-accent hover:opacity-70"
       }

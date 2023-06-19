@@ -2,13 +2,11 @@
 
 import { IoLocationOutline } from "react-icons/io5";
 import Avatar from "../Avatar";
-import { AiOutlineEye } from "react-icons/ai";
 import { Report, User } from "@prisma/client";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import useReportModal from "@/app/hooks/useReportModal";
-import { useCallback } from "react";
 import SeenButton from "../SeenButton";
+import { useRouter } from "next/navigation";
 
 export interface ReportCardProps {
   data: Report & {
@@ -18,10 +16,14 @@ export interface ReportCardProps {
 }
 
 const ReportCard: React.FC<ReportCardProps> = ({ data, currentUser }) => {
+  const router = useRouter();
   return (
-    <div className="bg-white w-full min-w-[300px] flex flex-col p-4 rounded-2xl gap-1 shadow-lg shadow-darker/5 border-[1px] border-primary/10">
+    <div className="bg-white w-full min-w-[300px] flex flex-col p-4 rounded-2xl gap-1 shadow-lg shadow-darker/5 border-[1px] border-emerald-600/10">
       {/* User Section */}
-      <div className="flex flex-row gap-4 items-center">
+      <div
+        onClick={() => router.push(`dashboard/profile/${data.userId}`)}
+        className="flex flex-row gap-4 items-center cursor-pointer group"
+      >
         <Avatar
           src={
             data.user.image ||
@@ -31,7 +33,9 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, currentUser }) => {
           size={55}
         />
         <div className="flex flex-col">
-          <span className="text-md font-bold">{data.user.name}</span>
+          <span className="text-md font-bold group-hover:text-accent  duration-300">
+            {data.user.name}
+          </span>
           <span className="text-xs font-light">
             {format(data.createdAt, "cccc, dd MMMM yyyy", { locale: id }) ||
               "Tanggal tidak ditemukan"}

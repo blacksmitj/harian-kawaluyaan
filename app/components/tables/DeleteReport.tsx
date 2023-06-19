@@ -28,16 +28,14 @@ const DeleteReportModal: React.FC<DeleteReportProps> = ({ report }) => {
     [deleteReportModal, report]
   );
   return (
-    <>
-      <button
-        onClick={() => onDelete(report.id)}
-        disabled={isLoading}
-        className="rounded-xl py-1 flex justify-start items-center gap-2 hover:text-rose-500 text-darker duration-300 w-full"
-      >
-        <MdOutlineDeleteOutline size={20} />
-        <span className="hidden sm:inline">Hapus</span>
-      </button>
-    </>
+    <button
+      onClick={() => onDelete(report.id)}
+      disabled={isLoading}
+      className="rounded-xl py-1 flex justify-start items-center gap-2 w-full"
+    >
+      <MdOutlineDeleteOutline size={20} />
+      Hapus
+    </button>
   );
 };
 

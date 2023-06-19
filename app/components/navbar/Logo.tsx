@@ -10,7 +10,7 @@ const Logo = () => {
     <Image
       onClick={() => router.push("/dashboard")}
       alt="Logo"
-      className="cursor-pointer p-2"
+      className="cursor-pointer -mx-4"
       height="150"
       width="150"
       src="/images/p3dw-kawaluyaan.png"

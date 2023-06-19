@@ -9,14 +9,22 @@ export async function getUsersById(
 ) {
   try {
     const { id } = params;
+    
+    const query: any = {}
+
+    if (id) {
+      query.id = id
+    }
 
     const users = await prisma.user.findUnique({
-      where: { id },
+      where: {id},
     });
 
     return users;
     
   } catch (error: any) {
+    console.log("error");
+    
     throw new Error(error);
   }
 }

@@ -9,7 +9,7 @@ const UserMenu = () => {
   return (
     <div
       onClick={sideMenu.toggle}
-      className="flex flex-row items-center gap-3 cursor-pointer py-1 px-2 rounded-md bg-darker text-white hover:bg-accent hover:text-white-prime transition"
+      className="flex flex-row items-center gap-3 cursor-pointer py-1 px-2 rounded-md bg-darker text-white hover:bg-accent hover:text-white transition"
     >
       <div className="md:block">
         <AiOutlineMenu size={20} />

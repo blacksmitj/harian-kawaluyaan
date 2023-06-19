@@ -34,7 +34,7 @@ const ReportsPage = async () => {
       <ButtonCreate verified={currentUser.verifiedAccount} />
       <EditModal />
       <DeleteReportModal />
-      <ReportsClient reports={reports} />
+      <ReportsClient currentUser={currentUser} />
     </>
   );
 };

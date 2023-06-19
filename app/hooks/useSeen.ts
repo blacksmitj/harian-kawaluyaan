@@ -1,7 +1,7 @@
 import { Report, User } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import useReportModal from "./useReportModal";
 
 interface IUseSeen {
@@ -18,6 +18,7 @@ const useSeen = ({
   const router = useRouter();
   const seenIds = dataReport.id;
   const reportModal = useReportModal();
+  const [isLoading, setIsLoading] = useState(false)
 
   const hasSeen = useMemo(() => {
     const list = currentUser?.seenIds || [];
@@ -28,19 +29,24 @@ const useSeen = ({
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.stopPropagation;
+
+    setIsLoading(true);
     
     if (!currentUser) {
       return;
     }
-    
-    try {
-      let request = () => axios.post(`/api/seen/${seenIds}`);
-      
-      await request();
-      router.refresh();
-    } catch (error) {
-      console.error(error);
-      return
+
+    if (!hasSeen) {
+      try {
+        let request = () => axios.post(`/api/seen/${seenIds}`);
+        await request();
+        router.refresh();
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.error(error);
+        return
+      }
     }
 
     reportModal.onOpen()
@@ -48,11 +54,12 @@ const useSeen = ({
       ...dataReport,
       listCanceled: JSON.parse(dataReport.listCanceled),
     });
+    setIsLoading(false);
 
-  },[currentUser, router, seenIds, dataReport, reportModal])
+  },[currentUser, router, seenIds, dataReport, reportModal, hasSeen])
 
   return {
-    hasSeen, seenChecked
+    hasSeen, seenChecked, isLoading
   }
 }
 

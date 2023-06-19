@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/app/libs/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser"
@@ -45,4 +45,77 @@ export async function POST(
   })
 
   return NextResponse.json(report)
+}
+
+export async function GET(
+  request: NextRequest,
+) {
+  const currentUser = await getCurrentUser();
+  const { nextUrl: { searchParams } } = request;
+
+  const keyword = searchParams.get('keyword') || "";
+  const page = searchParams.get('page') || "0";
+  const limit = searchParams.get('limit') || "10";
+
+  const offset = parseInt(limit) * parseInt(page);
+
+  const totalRows = await prisma.report.count({
+    where: {
+      userId: currentUser?.id,
+      OR: [
+        {service: {
+          contains: keyword,
+          mode: 'insensitive'
+        }},
+        {place: {
+          contains: keyword,
+          mode: 'insensitive'
+        }},
+        {location: {
+          contains: keyword,
+          mode: 'insensitive'
+        }},
+      ]
+    },
+  });
+
+  const totalPage = Math.ceil(totalRows/parseInt(limit));
+
+  const result = await prisma.report.findMany({
+    where: {
+      userId: currentUser?.id,
+      OR: [
+        {service: {
+          contains: keyword,
+          mode: 'insensitive'
+        }},
+        {place: {
+          contains: keyword,
+          mode: 'insensitive'
+        }},
+        {location: {
+          contains: keyword,
+          mode: 'insensitive'
+        }},
+      ]
+    },
+    include: {
+      user: true
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: parseInt(limit),
+    skip: offset
+  });
+
+  
+
+  return NextResponse.json({
+    result,
+    page: parseInt(page),
+    limit: limit,
+    totalRows: totalRows,
+    totalPage: totalPage,
+  });
 }

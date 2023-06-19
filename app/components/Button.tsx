@@ -33,7 +33,7 @@ const Button: React.FC<ButtonProps> = ({
         transition
         w-full
         hover:bg-accent
-        ${neutral ? "bg-neutral-50/80" : "bg-primary"}
+        ${neutral ? "bg-neutral-100" : "bg-primary"}
         ${neutral ? "text-darker" : "text-white"}
         ${neutral ? "hover:text-white" : ""}
         ${small ? "py-1" : "py-3"}

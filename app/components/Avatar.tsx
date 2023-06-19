@@ -11,7 +11,7 @@ const Avatar: React.FC<AvatarProps> = ({ src, size }) => {
   return (
     <Image
       alt="Avatar"
-      className="rounded-full"
+      className="rounded-full group-hover:scale-95 duration-300"
       height={size || 45}
       width={size || 45}
       src={src}

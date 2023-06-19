@@ -3,7 +3,7 @@ import { IconType } from "react-icons";
 
 interface InputProps {
   id: string;
-  label: string;
+  label?: string;
   type?: string;
   disabled?: boolean;
   required?: boolean;
@@ -26,9 +26,11 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <div className="mb-1">
-      <label htmlFor={id} className="block mb-2 text-sm font-medium">
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={id} className="block mb-2 text-sm font-medium">
+          {label}
+        </label>
+      )}
       <div className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-darker/60">
           {Icon && <Icon size={20} />}
@@ -40,8 +42,12 @@ const Input: React.FC<InputProps> = ({
           type={type}
           className={`bg-gray-50 border-[3px] border-gray-300 text-sm font-medium rounded-lg block w-full p-2.5
           ${Icon ? "pl-10" : "pl-4"}
-          ${errors[id] ? "border-red-200" : "border-primary/10"}
-          ${errors[id] ? "focus:outline-red-400" : "focus:outline-primary/60"}
+          ${errors[id] ? "border-red-200" : "border-emerald-600/10"}
+          ${
+            errors[id]
+              ? "focus:outline-red-400"
+              : "focus:outline-emerald-700/60"
+          }
           `}
           placeholder={placeholder}
         />
