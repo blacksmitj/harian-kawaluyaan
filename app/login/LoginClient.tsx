@@ -37,8 +37,6 @@ const LoginClient = () => {
       ...data,
       redirect: false,
     }).then((callback) => {
-      setIsLoading(false);
-
       if (callback?.ok) {
         router.push("/dashboard");
       }
@@ -46,6 +44,7 @@ const LoginClient = () => {
       if (callback?.error) {
         setErrorMsg(callback.error);
       }
+      setIsLoading(false);
     });
   };
 
