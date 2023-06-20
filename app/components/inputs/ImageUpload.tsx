@@ -63,7 +63,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     >
       {({ open }) => {
         return (
-          <div className="flex flex-col items-center bg-white/20 rounded-lg shadow-lg p-4 backdrop-blur-md border-[1px] border-white/50 w-[70vw] min-h-[20vh] gap-4">
+          <div className="flex flex-col items-center bg-white/20 rounded-lg shadow-lg p-4 backdrop-blur-md border-[1px] border-white/50 md:w-[50vw] w-[70vw] h-fit gap-4">
             <Avatar
               size={70}
               src={

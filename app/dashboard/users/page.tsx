@@ -1,5 +1,5 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
-import SettingsClient from "./UsersClient";
+import UsersClient from "./UsersClient";
 import EmptyState from "@/app/components/EmptyState";
 import { IUsersParams, getUsers } from "@/app/actions/getUsers";
 import DeleteUser from "@/app/components/tables/DeleteUser";
@@ -29,7 +29,7 @@ const UsersPage = async ({ searchParams }: UsersPageProps) => {
   return (
     <>
       <DeleteUserModal />
-      <SettingsClient />
+      <UsersClient />
     </>
   );
 };

@@ -11,6 +11,7 @@ export async function getReports(
   params: IReportsParams
 ) {
   try {
+    const today = new Date();
     const {
       userId,
       name,
@@ -36,6 +37,7 @@ export async function getReports(
       query.location = location;
     }
 
+
     const reports = await prisma.report.findMany({
       where: query,
       include: {
@@ -43,7 +45,8 @@ export async function getReports(
       },
       orderBy: {
         createdAt: 'desc'
-      }
+      },
+      take: 5
     });
 
     return reports;

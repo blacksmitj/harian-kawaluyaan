@@ -3,8 +3,8 @@
   "short_name": "P3DW Kawaluyaan",
   "start_url": "/",
   "display": "fullscreen",
-  "background_color": "#073D38",
-  "theme_color": "#0C7066",
+  "background_color": "#0C7066",
+  "theme_color": "#073D38",
   "orientation": "portrait",
   "icons": [
     {

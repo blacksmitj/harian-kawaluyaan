@@ -100,7 +100,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ currentUser, user }) => {
             </div>
           </div>
           {/* Information */}
-          <div className="flex flex-col gap-4 text-sm md:px-4 mt-12">
+          <div className="flex flex-col gap-4 text-sm md:px-4 mt-16">
             <div className="flex flex-row md:gap-12 gap-3">
               <div className="sm:w-1/4 w-[100px] min-w-[100px] flex flex-col gap-1">
                 <div className="font-bold">Nama</div>
