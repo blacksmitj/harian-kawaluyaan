@@ -46,7 +46,7 @@ const useActiveUser = ({
       console.log('Something Error with activating', user.name);
       setIsLoading(false)
     }
-  },[user.id, router, user.name])
+  },[user.id, router, user.name, openToast])
 
   return {
     hasActived, toggleActive, isLoading
