@@ -11,6 +11,7 @@ import ReactPaginate from "react-paginate";
 import DropdownReport from "./DropdownReport";
 import useReportModal from "@/app/hooks/useReportModal";
 import TableLoader from "../TableLoader";
+import useOpenToast from "@/app/hooks/useOpenToast";
 
 interface TableReportsProps {
   currentUser: User;
@@ -23,6 +24,7 @@ type ReportWithUser = Report & {
 type PageChangeHandler = (selectedItem: { selected: number }) => void;
 
 const TableReports: React.FC<TableReportsProps> = ({ currentUser }) => {
+  const openToast = useOpenToast();
   const reportModal = useReportModal();
 
   const [reports, setReports] = useState<ReportWithUser[]>([]);
@@ -37,7 +39,7 @@ const TableReports: React.FC<TableReportsProps> = ({ currentUser }) => {
   useEffect(() => {
     getUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, keyword, reportModal.isChange]);
+  }, [page, keyword, openToast.isChange]);
 
   const getUsers = async () => {
     setIsLoading(true);

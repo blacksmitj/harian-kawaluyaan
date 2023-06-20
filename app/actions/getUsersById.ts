@@ -23,8 +23,6 @@ export async function getUsersById(
     return users;
     
   } catch (error: any) {
-    console.log("error");
-    
     throw new Error(error);
   }
 }

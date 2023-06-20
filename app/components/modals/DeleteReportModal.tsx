@@ -6,11 +6,11 @@ import Modal from "./Modal";
 import ResumeCard from "../card/ResumeCard";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import useReportModal from "@/app/hooks/useReportModal";
+import useOpenToast from "@/app/hooks/useOpenToast";
 
 const DeleteReportModal = () => {
+  const openToast = useOpenToast();
   const deleteReportModal = useDeleteReportModal();
-  const reportModal = useReportModal();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const report = deleteReportModal.report;
@@ -21,9 +21,11 @@ const DeleteReportModal = () => {
       .delete(`/api/report/${report.id}`)
       .then(() => {
         deleteReportModal.onClose();
-        reportModal.onChange();
         router.refresh();
-        // router.replace("/dashboard/reports");
+        openToast.setTitle("Laporan Dihapus");
+        openToast.setSubTitle("Data laporan telah terhapus!");
+        openToast.onOpen();
+        openToast.onChange();
       })
       .catch((error) => {
         console.log(error?.response?.data?.error);

@@ -22,6 +22,7 @@ import ServiceInput from "../inputs/ServiceInput";
 import InputNomoratur from "../inputs/InputNomoratur";
 import MultipleSelect from "../inputs/MultipleSelect";
 import useReportModal from "@/app/hooks/useReportModal";
+import useOpenToast from "@/app/hooks/useOpenToast";
 
 enum STEPS {
   SERVICE = 0,
@@ -56,7 +57,7 @@ export const services = [
 
 const EditModal = () => {
   const editModal = useEditModal();
-  const reportModal = useReportModal();
+  const openToast = useOpenToast();
   const [msg, setMsg] = useState("");
 
   const report = useReportModal().report;
@@ -142,10 +143,13 @@ const EditModal = () => {
     axios
       .put(`/api/report/${data.id}`, data)
       .then(() => {
-        reportModal.onChange();
         reset();
         setStep(STEPS.SERVICE);
         editModal.onClose();
+        openToast.setTitle("Laporan Update");
+        openToast.setSubTitle("Data laporan anda telah dibaharui!");
+        openToast.onOpen();
+        openToast.onChange();
       })
       .catch(() => {
         setMsg("Tidak dapat menyimpan data!");

@@ -8,10 +8,6 @@ interface ReportModalStore {
   };
   setReport: (report: SafeReport & {user: User}) => void;
 
-  isChange: boolean;
-  onChange: () => void;
-
-
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
@@ -20,10 +16,6 @@ interface ReportModalStore {
 const useReportModal = create<ReportModalStore>((set) => ({
   report: {} as SafeReport & {user: User},
   setReport: (report: SafeReport & {user: User}) => set((state) => ({...state, report})),
-
-  isChange: false,
-  onChange: () => set((state) => ({ isChange: !state.isChange })),
-
 
   isOpen: false,
   onOpen: () => set({ isOpen: true }),

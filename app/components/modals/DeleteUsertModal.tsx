@@ -5,8 +5,10 @@ import Modal from "./Modal";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import useOpenToast from "@/app/hooks/useOpenToast";
 
 const DeleteUserModal = () => {
+  const openToast = useOpenToast();
   const deleteUserModal = useDeleteUserModal();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -19,6 +21,10 @@ const DeleteUserModal = () => {
       .then(() => {
         deleteUserModal.onClose();
         router.refresh();
+        openToast.setTitle("User Dihapus");
+        openToast.setSubTitle("User telah dihapus!");
+        openToast.onOpen();
+        openToast.onChange();
       })
       .catch((error) => {
         console.log(error?.response?.data?.error);

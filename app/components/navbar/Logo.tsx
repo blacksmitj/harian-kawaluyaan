@@ -14,8 +14,6 @@ const Logo = () => {
       height="150"
       width="150"
       src="/images/p3dw-kawaluyaan.png"
-      loading="lazy"
-      priority={false}
     />
   );
 };

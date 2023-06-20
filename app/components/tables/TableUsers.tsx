@@ -7,16 +7,16 @@ import React, { useState, useEffect, SyntheticEvent } from "react";
 import { BsChevronLeft, BsChevronRight, BsSearch } from "react-icons/bs";
 import Avatar from "../Avatar";
 import ToggleActiveUser from "../ToggleActiveUser";
-import DeleteUser from "./DeleteUser";
-import useUserModal from "@/app/hooks/useUserModal";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
 import TableLoader from "../TableLoader";
+import DropdownUser from "./DropdownUser";
+import useOpenToast from "@/app/hooks/useOpenToast";
 
 type PageChangeHandler = (selectedItem: { selected: number }) => void;
 
 const TableUsers = ({}) => {
-  const userModal = useUserModal();
+  const openToast = useOpenToast();
 
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState(0);
@@ -30,7 +30,7 @@ const TableUsers = ({}) => {
   useEffect(() => {
     getUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, keyword, userModal.isChange]);
+  }, [page, keyword, openToast.isChange]);
 
   const getUsers = async () => {
     setIsLoading(true);
@@ -138,11 +138,7 @@ const TableUsers = ({}) => {
                         <ToggleActiveUser user={user} />
                       </td>
                       <td className="px-4 py-2 sm:px-6 sm:py-3">
-                        {user.role !== "ADMIN" ? (
-                          <DeleteUser user={user} />
-                        ) : (
-                          "Hellow Master ^^"
-                        )}
+                        <DropdownUser user={user} />
                       </td>
                     </tr>
                   ))}
@@ -163,7 +159,7 @@ const TableUsers = ({}) => {
           <div className="flex flex-col gap-1 text-xs font-normal text-gray-500">
             <div>
               <span>
-                Total Laporan:{" "}
+                Total User:{" "}
                 <span className="font-semibold text-gray-900">{rows}</span>
               </span>
             </div>

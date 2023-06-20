@@ -7,9 +7,10 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 
 interface DeleteUserProps {
   user: User;
+  disabled?: boolean;
 }
 
-const DeleteUser: React.FC<DeleteUserProps> = ({ user }) => {
+const DeleteUser: React.FC<DeleteUserProps> = ({ user, disabled }) => {
   const [isLoading, setIsLoading] = useState(false);
   const deleteUserModal = useDeleteUserModal();
 
@@ -24,11 +25,11 @@ const DeleteUser: React.FC<DeleteUserProps> = ({ user }) => {
     <>
       <button
         onClick={() => onDelete()}
-        disabled={isLoading}
-        className="rounded-xl py-1 flex justify-start items-center gap-2 hover:text-rose-500 text-darker duration-300 w-full"
+        disabled={isLoading || disabled}
+        className="flex justify-start items-center gap-2 w-full text-darker hover:bg-primary hover:text-white px-2 py-3 rounded-md"
       >
         <MdOutlineDeleteOutline size={20} />
-        <span className="hidden sm:inline">Hapus</span>
+        Hapus
       </button>
     </>
   );

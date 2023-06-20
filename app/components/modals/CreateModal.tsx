@@ -22,6 +22,7 @@ import ServiceInput from "../inputs/ServiceInput";
 import InputNomoratur from "../inputs/InputNomoratur";
 import MultipleSelect from "../inputs/MultipleSelect";
 import useReportModal from "@/app/hooks/useReportModal";
+import useOpenToast from "@/app/hooks/useOpenToast";
 
 enum STEPS {
   SERVICE = 0,
@@ -55,11 +56,10 @@ export const services = [
 ];
 
 const CreateModal = () => {
+  const openToast = useOpenToast();
   const createModal = useCreateModal();
   const reportModal = useReportModal();
 
-  const router = useRouter();
-  const pathName = usePathname() || "/dashboard";
   const [msg, setMsg] = useState("");
 
   const [step, setStep] = useState(STEPS.SERVICE);
@@ -140,10 +140,13 @@ const CreateModal = () => {
     axios
       .post("/api/report", data)
       .then(() => {
-        reportModal.onChange();
         reset();
         setStep(STEPS.SERVICE);
         createModal.onClose();
+        openToast.setTitle("Laporan Disimpan");
+        openToast.setSubTitle("Data laporan anda telah tersimpan!");
+        openToast.onOpen();
+        openToast.onChange();
       })
       .catch(() => {
         setMsg("Tidak dapat menyimpan data!");

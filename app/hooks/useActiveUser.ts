@@ -2,6 +2,7 @@ import { User } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
+import useOpenToast from "./useOpenToast";
 
 
 interface IUseActiveUser {
@@ -11,6 +12,7 @@ interface IUseActiveUser {
 const useActiveUser = ({
   user,
 }: IUseActiveUser ) => {
+  const openToast = useOpenToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false)
 
@@ -33,6 +35,10 @@ const useActiveUser = ({
       await request();
       router.refresh();
 
+      openToast.setTitle("User Konfirmasi");
+      openToast.setSubTitle("Konfirmasi user "+ user.name +" dirubah!");
+      openToast.onOpen();
+      openToast.onChange();
       setTimeout(() => {
         setIsLoading(false)
       },300)

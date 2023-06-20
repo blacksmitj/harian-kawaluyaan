@@ -4,6 +4,7 @@ import Navbar from "@/app/components/navbar/Navbar";
 import SideMenu from "@/app/components/navbar/SideMenu";
 import ReportModal from "../components/modals/ReportModal";
 import EditModal from "../components/modals/EditModal";
+import Notification from "../components/Notification";
 
 export default async function DashboardLayout({
   children,
@@ -18,6 +19,7 @@ export default async function DashboardLayout({
 
   return (
     <>
+      <Notification />
       <Navbar />
       <ReportModal currentUser={currentUser} />
       <div className="flex">

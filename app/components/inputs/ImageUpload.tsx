@@ -1,8 +1,11 @@
 "use client";
 
 import { CldUploadWidget } from "next-cloudinary";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Avatar from "../Avatar";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import useOpenToast from "@/app/hooks/useOpenToast";
 
 declare global {
   var cloudinary: any;
@@ -13,6 +16,7 @@ interface ImageUploadProps {
   value: string;
   name: string | null;
   isChanged: boolean;
+  id: string;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -20,13 +24,33 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   value,
   name,
   isChanged,
+  id,
 }) => {
+  const openToast = useOpenToast();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const handleUpload = useCallback(
     (result: any) => {
       onChange(result.info.secure_url);
     },
     [onChange]
   );
+
+  const deletePhoto = useCallback(() => {
+    setIsLoading(true);
+    axios
+      .put(`/api/photo/${id}`)
+      .then(() => {
+        openToast.setTitle("Foto dihapus");
+        openToast.setSubTitle("Foto anda telah dihapus!");
+        openToast.onOpen();
+        router.refresh();
+      })
+      .catch(() => {})
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [id, router, openToast]);
 
   return (
     <CldUploadWidget
@@ -39,22 +63,36 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     >
       {({ open }) => {
         return (
-          <>
-            <button
-              onClick={() => open?.()}
-              disabled={!isChanged}
-              className={`cursor-pointer hover:scale-90 w-fit duration-150 disabled:hover:scale-90 disabled:cursor-default border-4 hover:border-2 rounded-full`}
-            >
-              <Avatar
-                size={70}
-                src={
-                  value ||
-                  `https://api.dicebear.com/6.x/big-smile/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
-                    name
-                }
-              />
-            </button>
-          </>
+          <div className="flex flex-col items-center bg-white/20 rounded-lg shadow-lg p-4 backdrop-blur-md border-[1px] border-white/50 w-[70vw] min-h-[20vh] gap-4">
+            <Avatar
+              size={70}
+              src={
+                value ||
+                `https://api.dicebear.com/6.x/big-smile/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=` +
+                  name
+              }
+            />
+            {isChanged && (
+              <div className="flex flex-row gap-4">
+                <button
+                  onClick={() => open?.()}
+                  disabled={!isChanged}
+                  className={`cursor-pointer hover:opacity-70 w-fit duration-150  disabled:cursor-default rounded-md border-[2px] border-primary/50 px-2 py-1 text-sm`}
+                >
+                  Ganti Foto
+                </button>
+                {value && (
+                  <button
+                    onClick={deletePhoto}
+                    disabled={!isChanged}
+                    className={`cursor-pointer hover:opacity-70 w-fit duration-150  disabled:cursor-default rounded-md  px-2 py-1 text-sm`}
+                  >
+                    Hapus Foto
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         );
       }}
     </CldUploadWidget>

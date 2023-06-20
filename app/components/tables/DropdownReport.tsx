@@ -1,9 +1,7 @@
 "use client";
 
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { AiOutlineEye } from "react-icons/ai";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { MdOutlineDeleteOutline } from "react-icons/md";
 import SeeReport from "./SeeReport";
 import DeleteReport from "./DeleteReport";
 import { Report, User } from "@prisma/client";

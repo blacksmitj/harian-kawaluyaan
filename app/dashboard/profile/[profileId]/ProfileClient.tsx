@@ -1,10 +1,10 @@
 "use client";
 
-import Avatar from "@/app/components/Avatar";
 import Button from "@/app/components/Button";
 import Container from "@/app/components/Container";
 import ImageUpload from "@/app/components/inputs/ImageUpload";
 import Input from "@/app/components/inputs/Input";
+import useOpenToast from "@/app/hooks/useOpenToast";
 import { User } from "@prisma/client";
 import axios from "axios";
 import { format } from "date-fns";
@@ -12,7 +12,6 @@ import { id } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Heading from "@/app/components/Heading";
 
 interface ProfileClientProps {
   currentUser: User;
@@ -20,6 +19,7 @@ interface ProfileClientProps {
 }
 
 const ProfileClient: React.FC<ProfileClientProps> = ({ currentUser, user }) => {
+  const openToast = useOpenToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [msg, setMsg] = useState("");
@@ -70,6 +70,9 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ currentUser, user }) => {
       .put(`/api/user/${currentUser.id}`, data)
       .then(() => {
         reset();
+        openToast.setTitle("Profil Disimpan");
+        openToast.setSubTitle("Data profil telah tersimpan");
+        openToast.onOpen();
         router.refresh();
       })
       .catch(() => {
@@ -86,17 +89,18 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ currentUser, user }) => {
         <div className="flex flex-col gap-8 bg-white w-full h-full lg:p-6 mb-10">
           <div className="relative flex flex-col items-center h-24 mb-6">
             <div className="absolute flex w-full items-center justify-center gap-4 bg-gradient-to-tl from-darker to-primary rounded-t-xl h-full bg-cover"></div>
-            <div className="absolute -bottom-8 justify-center">
+            <div className="absolute flex flex-col items-center -bottom-20 justify-center">
               <ImageUpload
                 onChange={(value) => setCostumValue("image", value)}
                 isChanged={isChanged()}
                 value={image}
                 name={user.name}
+                id={user.id}
               />
             </div>
           </div>
           {/* Information */}
-          <div className="flex flex-col gap-4 text-sm overflow-auto">
+          <div className="flex flex-col gap-4 text-sm md:px-4 mt-12">
             <div className="flex flex-row md:gap-12 gap-3">
               <div className="sm:w-1/4 w-[100px] min-w-[100px] flex flex-col gap-1">
                 <div className="font-bold">Nama</div>
