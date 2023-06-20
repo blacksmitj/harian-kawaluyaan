@@ -103,7 +103,6 @@ const TableUsers = ({}) => {
                     <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide hidden sm:table-cell">
                       Result
                     </th>
-                    <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide"></th>
                   </tr>
                 </thead>
                 <tbody>
