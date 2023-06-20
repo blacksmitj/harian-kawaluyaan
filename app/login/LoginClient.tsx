@@ -40,7 +40,6 @@ const LoginClient = () => {
       setIsLoading(false);
 
       if (callback?.ok) {
-        router.refresh();
         router.push("/dashboard");
       }
 

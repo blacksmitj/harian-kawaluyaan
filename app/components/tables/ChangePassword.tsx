@@ -54,8 +54,6 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ user }) => {
       return;
     }
 
-    router.refresh();
-
     axios
       .put(`/api/password/${user.id}`, data)
       .then(() => {
