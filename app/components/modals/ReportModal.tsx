@@ -12,7 +12,7 @@ import { User } from "@prisma/client";
 import ProfileMenu from "../ProfileMenu";
 
 interface ReportModalProps {
-  currentUser?: User;
+  currentUser?: User | null;
 }
 
 const ReportModal: React.FC<ReportModalProps> = ({ currentUser }) => {

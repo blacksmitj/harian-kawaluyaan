@@ -12,11 +12,6 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const currentUser = await getCurrentUser();
-
-  if (!currentUser) {
-    throw new Error("Anda harus Login!");
-  }
-
   return (
     <>
       <Notification />
