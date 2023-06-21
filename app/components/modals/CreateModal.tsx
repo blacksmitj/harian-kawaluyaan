@@ -21,7 +21,6 @@ import ResumeCard from "../card/ResumeCard";
 import ServiceInput from "../inputs/ServiceInput";
 import InputNomoratur from "../inputs/InputNomoratur";
 import MultipleSelect from "../inputs/MultipleSelect";
-import useReportModal from "@/app/hooks/useReportModal";
 import useOpenToast from "@/app/hooks/useOpenToast";
 
 enum STEPS {
@@ -58,7 +57,6 @@ export const services = [
 const CreateModal = () => {
   const openToast = useOpenToast();
   const createModal = useCreateModal();
-  const reportModal = useReportModal();
 
   const [msg, setMsg] = useState("");
 

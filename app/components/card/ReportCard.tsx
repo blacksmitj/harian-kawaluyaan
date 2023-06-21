@@ -7,6 +7,15 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import SeenButton from "../SeenButton";
 import { useRouter } from "next/navigation";
+import {
+  BiFirstPage,
+  BiHorizontalLeft,
+  BiHorizontalRight,
+  BiLastPage,
+} from "react-icons/bi";
+import { BsArrowCounterclockwise } from "react-icons/bs";
+import { AiOutlineMobile } from "react-icons/ai";
+import { HiOutlineSquare3Stack3D } from "react-icons/hi2";
 
 export interface ReportCardProps {
   data: Report & {
@@ -18,7 +27,7 @@ export interface ReportCardProps {
 const ReportCard: React.FC<ReportCardProps> = ({ data, currentUser }) => {
   const router = useRouter();
   return (
-    <div className="bg-white w-full min-w-[300px] flex flex-col p-4 rounded-2xl gap-1 shadow-lg shadow-darker/5 border-[1px] border-emerald-600/10">
+    <div className="bg-white w-full min-w-[300px] flex flex-col p-4 rounded-2xl shadow-lg shadow-darker/5 border-[1px] border-emerald-600/10 gap-4">
       {/* User Section */}
       <div className="flex flex-row gap-4 items-center">
         <Avatar
@@ -37,26 +46,66 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, currentUser }) => {
             {data.user.name}
           </span>
           <span className="text-xs font-light">
-            {format(data.createdAt, "cccc, dd MMMM yyyy", { locale: id }) ||
-              "Tanggal tidak ditemukan"}
+            {format(data.createdAt, "cccc, dd MMMM yyyy - p", {
+              locale: id,
+            }) || "Tanggal tidak ditemukan"}
           </span>
         </div>
       </div>
       {/* Point Section */}
-      <div className="flex flex-row justify-between gap-4 my-4">
-        <div className="bg-white shadow-primary/5 shadow-md border-l-4 border-[#0D7D27]/20 w-full text-center flex flex-col py-4 rounded-md">
-          <span className="font-bold text-2xl">
-            {data.ended - data.started + 1}
-          </span>
-          <span className="font-light text-xs">Total</span>
+      <div className="flex flex-row gap-3 justify-between">
+        <div className="flex flex-col bg-white justify-between w-full rounded-lg p-3 border-[1px] border-accent/20">
+          <div className="font-light text-xs md:text-sm flex flex-col gap-1 mb-2">
+            <div className="p-1 bg-primary/70 rounded-full text-white w-fit">
+              <HiOutlineSquare3Stack3D size={16} />
+            </div>
+            <p>Total</p>
+          </div>
+          <p className="font-extrabold text-xl md:text-3xl">
+            {data.ended - data.started}
+          </p>
         </div>
-        <div className="bg-white shadow-primary/5 shadow-md border-l-4 border-[#29AAE2]/20 w-full text-center flex flex-col py-4 rounded-md">
-          <span className="font-bold text-2xl">{data.eSamsat}</span>
-          <span className="font-light text-xs">E-Samsat</span>
+        <div className="flex flex-col bg-white justify-between w-full rounded-lg p-3 border-[1px] border-accent/20">
+          <div className="font-light text-xs md:text-sm flex flex-col gap-1 mb-2">
+            <div className="p-1 bg-primary/70 rounded-full text-white w-fit">
+              <AiOutlineMobile size={16} />
+            </div>
+            <p>eSamsat</p>
+          </div>
+          <p className="font-extrabold text-xl md:text-3xl ">{data.eSamsat}</p>
         </div>
-        <div className="bg-white shadow-primary/5 shadow-md border-l-4 border-[#E22029]/20 w-full text-center flex flex-col py-4 rounded-md">
-          <span className="font-bold text-2xl">{data.canceled}</span>
-          <span className="font-light text-xs">Batal</span>
+        <div className="flex flex-col bg-red-50 justify-between w-full rounded-lg p-3 border-[1px] border-red-800/10">
+          <div className="font-light text-xs md:text-sm flex flex-col gap-1 mb-2">
+            <div className="p-1 bg-red-800/60 text-white rounded-full w-fit">
+              <BsArrowCounterclockwise size={16} />
+            </div>
+            <p className="text-red-800">Batal</p>
+          </div>
+          <p className="font-extrabold text-xl md:text-3xl text-red-800">
+            {data.canceled}
+          </p>
+        </div>
+      </div>
+
+      <div className="flex flex-row gap-2">
+        <div className="flex flex-col w-full align-middle border-[1px] border-accent/20 rounded-lg">
+          <div className="flex flex-row items-center gap-2 text-darker/60 bg-primary/5 rounded-t-md px-2 py-1.5">
+            <BiHorizontalLeft size={20} />
+            <p className="text-xs">Awal</p>
+          </div>
+          <p className="text-xl font-extrabold px-2 py-1 rounded-b-md">
+            {"0" + data.started}
+          </p>
+        </div>
+
+        <div className="flex flex-col w-full align-middle border-[1px] border-accent/20 rounded-lg">
+          <div className="flex flex-row items-center gap-2 text-darker/60 bg-primary/5 rounded-t-md px-2 py-1.5">
+            <BiHorizontalRight size={20} />
+            <p className="text-xs">Akhir</p>
+          </div>
+          <p className="text-xl font-extrabold px-2 py-1 rounded-b-md">
+            {"0" + data.ended}
+          </p>
         </div>
       </div>
       {/* Footer Section */}

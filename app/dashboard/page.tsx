@@ -13,7 +13,7 @@ const Dashboard = async () => {
     return <EmptyState title="Unauthorized" subtitle="Please Login" />;
   }
 
-  if (reports === 0) {
+  if (reports.length === 0) {
     return (
       <>
         <EmptyState
@@ -26,7 +26,7 @@ const Dashboard = async () => {
     );
   }
 
-  return <DashboardClient currentUser={currentUser} />;
+  return <DashboardClient reports={reports} currentUser={currentUser} />;
 };
 
 export const dynamic = "force-dynamic";

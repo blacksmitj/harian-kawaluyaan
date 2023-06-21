@@ -20,7 +20,7 @@ const ButtonCreate: React.FC<ButtonCreateProps> = ({ verified }) => {
   }
 
   return (
-    <div className="fixed m-3 right-5 bottom-14 ">
+    <div className="fixed m-3 right-5 bottom-14 z-[1]">
       <button
         // onClick={onCreate}
         onClick={onCreate}

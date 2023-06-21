@@ -42,7 +42,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
     <>
       <div
         onClick={sideMenu.onClose}
-        className={`md:hidden fixed inset-0 h-screen bg-black/50 z-[1]
+        className={`md:hidden fixed inset-0 h-screen bg-black/50 z-[2]
         ${sideMenu.isOpen ? "block" : "hidden"}
         `}
       ></div>

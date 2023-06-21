@@ -18,7 +18,7 @@ const Notification = () => {
     <Toast.Provider swipeDirection="right">
       <Toast.Root
         open={openToast.isOpen}
-        className="bg-white/40 backdrop-blur-md rounded-md shadow-lg shadow-darker/10 p-4 items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut border-[1px] border-primary/20"
+        className="bg-white/70 backdrop-blur-md rounded-md shadow-lg shadow-darker/10 p-4 items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut border-[1px] border-primary/20"
       >
         <div className="flex flex-row justify-between items-center gap-8">
           <div className="flex flex-col 0.5">
