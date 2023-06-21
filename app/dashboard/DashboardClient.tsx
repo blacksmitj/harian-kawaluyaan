@@ -7,96 +7,79 @@ import Heading from "../components/Heading";
 import CreateModal from "../components/modals/CreateModal";
 import EditModal from "../components/modals/EditModal";
 import ReportCard from "../components/card/ReportCard";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
-import Button from "../components/Button";
 import { BsCloudDownload } from "react-icons/bs";
+import useReports from "../hooks/useReports";
+import TableLoader from "../components/TableLoader";
+import ReportCardLoader from "../components/ReportCardLoader";
 
-interface DashboardClientProps {
-  reports: (Report & {
-    user: User;
-  })[];
-  currentUser: User;
-}
-
-type ReportWithUser = Report & {
+export type ReportWithUser = Report & {
   user: User;
 };
 
-type PageChangeHandler = (selectedItem: { selected: number }) => void;
+interface DashboardClientProps {
+  currentUser: User;
+}
 
-const DashboardClient: React.FC<DashboardClientProps> = ({
-  reports: initialReports,
-  currentUser,
-}) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [reports, setReports] = useState<ReportWithUser[]>(initialReports);
-  const [start, setStart] = useState(5);
-  const [limit, setLimit] = useState(5);
-  const [hasMore, setHasMore] = useState(true);
+const DashboardClient: React.FC<DashboardClientProps> = ({ currentUser }) => {
+  const [start, setStart] = useState(0);
+  const { isLoading, error, reports, hasMore } = useReports({
+    start,
+  });
 
-  // useEffect(() => {
-  //   getReports();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [start]);
+  const observer = useRef<IntersectionObserver | undefined>();
 
-  const getReports = async () => {
-    setIsLoading(true);
-    const response = await axios.get(`/api/dashboard`, {
-      params: {
-        start,
-        limit,
-      },
-    });
-
-    const results = response.data.result.map((result: any) => ({
-      ...result,
-      createdAt: new Date(result.createdAt),
-      updatedAt: new Date(result.updatedAt),
-      user: {
-        ...result.user,
-        createdAt: new Date(result.user.createdAt),
-      },
-    }));
-
-    setReports([...reports, ...results]);
-    setIsLoading(false);
-    setHasMore(response.data.hasMore);
-    if (hasMore) {
-      setStart(start + 5);
-    }
-  };
+  const lastBookelementRef = useCallback(
+    (node: any) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setStart(start + 5);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasMore]
+  );
 
   return (
     <>
       <CreateModal />
       <EditModal />
-
       <Container>
         <div className="flex flex-col text-darker pt-20">
           <Heading title="Beranda" subtitle="Seluruh data hari ini!" />
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 mt-6">
             <ButtonCreate verified={currentUser.verifiedAccount} />
             {reports.map((report, index) => {
-              return (
-                <div key={index}>
-                  <ReportCard
-                    key={report.id}
-                    data={report}
-                    currentUser={currentUser}
-                  />
-                </div>
-              );
+              if (reports.length === index + 1) {
+                return (
+                  <div ref={lastBookelementRef} key={index}>
+                    <ReportCard data={report} currentUser={currentUser} />
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={index}>
+                    <ReportCard data={report} currentUser={currentUser} />
+                  </div>
+                );
+              }
             })}
           </div>
+          {isLoading && (
+            <div className="flex flex-col gap-4">
+              <ReportCardLoader />
+              <ReportCardLoader />
+            </div>
+          )}
           <div className="m-8 flex justify-center">
             {hasMore ? (
-              <button
-                onClick={getReports}
-                className="p-4 bg-primary rounded-full text-white animate-bounce"
-              >
+              <div className="p-4 bg-primary rounded-full text-white animate-bounce">
                 <BsCloudDownload size={20} />
-              </button>
+              </div>
             ) : (
               <p>data terakhir disini...</p>
             )}

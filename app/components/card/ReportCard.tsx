@@ -20,10 +20,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, currentUser }) => {
   return (
     <div className="bg-white w-full min-w-[300px] flex flex-col p-4 rounded-2xl gap-1 shadow-lg shadow-darker/5 border-[1px] border-emerald-600/10">
       {/* User Section */}
-      <div
-        onClick={() => router.push(`dashboard/profile/${data.userId}`)}
-        className="flex flex-row gap-4 items-center cursor-pointer group"
-      >
+      <div className="flex flex-row gap-4 items-center">
         <Avatar
           src={
             data.user.image ||
@@ -33,7 +30,10 @@ const ReportCard: React.FC<ReportCardProps> = ({ data, currentUser }) => {
           size={55}
         />
         <div className="flex flex-col">
-          <span className="text-md font-bold group-hover:text-accent  duration-300">
+          <span
+            onClick={() => router.push(`dashboard/profile/${data.userId}`)}
+            className="text-md font-bold hover:text-accent cursor-pointer group duration-300"
+          >
             {data.user.name}
           </span>
           <span className="text-xs font-light">

@@ -5,7 +5,6 @@ interface SideMenuStore {
   toggle: () => void;
   onOpen: () => void;
   onClose: () => void;
-
 }
 
 

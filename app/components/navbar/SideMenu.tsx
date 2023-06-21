@@ -1,9 +1,7 @@
 "use client";
 
 import useSideMenu from "@/app/hooks/useSideMenu";
-import { motion } from "framer-motion";
 import {
-  AiOutlineSetting,
   AiOutlinePaperClip,
   AiOutlineHome,
   AiOutlineLogout,
@@ -11,22 +9,33 @@ import {
 import ButtonSidebar from "../ButtonSidebar";
 import Toggle from "./Toggle";
 import ProfileMenu from "../ProfileMenu";
-import { useMediaQuery } from "react-responsive";
-import { useEffect, useRef } from "react";
 import { signOut } from "next-auth/react";
 import { User } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
 import { BiGroup } from "react-icons/bi";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+
+const MediaQuery = dynamic(() => import("react-responsive"), {
+  ssr: false,
+});
 
 interface SideMenuProps {
   currentUser?: User | null;
 }
 
 const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
+  const [isTabletMid, setisTabletMid] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
-  let isTabletMid = useMediaQuery({ query: "(max-width: 768px)" });
   const sideMenu = useSideMenu();
+
+  const handleMediaQueryChange = (matches: any) => {
+    console.log("matches", matches);
+
+    setisTabletMid(matches);
+  };
+
   const isAdmin = () => {
     if (currentUser?.role !== "ADMIN") {
       return false;
@@ -34,56 +43,39 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
     return true;
   };
 
-  useEffect(() => {
+  const animation = () => {
     if (isTabletMid) {
-      sideMenu.isOpen === false;
-    } else {
-      sideMenu.isOpen === true;
-    }
-  }, [isTabletMid, sideMenu.isOpen]);
+      console.log("do tablet");
 
-  const SideMenu_animation = isTabletMid
-    ? {
-        open: {
-          width: "16rem",
-          transition: {
-            damping: 40,
-          },
-        },
-        close: {
-          width: 0,
-          transition: {
-            damping: 40,
-          },
-        },
+      if (sideMenu.isOpen) {
+        return "translate-x-0 w-[16rem]";
+      } else {
+        return "-translate-x-[16rem] w-[16rem]";
       }
-    : {
-        open: {
-          width: "16rem",
-          transition: {
-            damping: 40,
-          },
-        },
-        close: {
-          width: "4rem",
-          transition: {
-            damping: 40,
-          },
-        },
-      };
+    } else {
+      console.log("not tablet");
+      if (sideMenu.isOpen) {
+        return "translate-x-0 w-[16rem]";
+      } else {
+        return "translate-x-0 w-[4rem]";
+      }
+    }
+  };
 
   return (
     <>
+      <MediaQuery maxWidth={768} onChange={handleMediaQueryChange}></MediaQuery>
+
       <div
         onClick={sideMenu.onClose}
         className={`md:hidden fixed inset-0 h-screen bg-black/50 transition-opacity duration-300 z-[1]
         ${sideMenu.isOpen ? "block" : "hidden"}
         `}
       ></div>
-      <motion.div
-        variants={SideMenu_animation}
-        animate={sideMenu.isOpen ? "open" : "close"}
-        className="w-[16rem] max-w-[16rem] h-screen shadow-md pt-20 md:relative fixed bg-white overflow-hidden text-neutral-800 z-10"
+      <div
+        className={`max-w-[16rem] h-screen shadow-md pt-20 md:relative fixed bg-white overflow-hidden text-neutral-800 z-10 duration-300
+        ${animation()}
+        `}
       >
         <div className="flex flex-col justify-between h-full">
           <div className="p-3">
@@ -150,7 +142,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
 
           <Toggle />
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };
