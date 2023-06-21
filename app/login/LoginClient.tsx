@@ -41,6 +41,7 @@ const LoginClient = () => {
       .then((callback) => {
         if (callback?.ok) {
           router.push("/dashboard");
+          router.refresh();
         }
         if (callback?.error) {
           setErrorMsg(callback.error);
