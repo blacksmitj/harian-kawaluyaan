@@ -1,7 +1,6 @@
 "use client";
 
 import useSideMenu from "@/app/hooks/useSideMenu";
-import { motion } from "framer-motion";
 import { AiOutlineLeft } from "react-icons/ai";
 
 const Toggle = () => {
