@@ -50,7 +50,7 @@ const DashboardClient: React.FC<DashboardClientProps> = ({ currentUser }) => {
       <EditModal />
       <Container>
         <div className="flex flex-col text-darker pt-20">
-          <Heading title="Beranda" subtitle="Seluruh data hari ini!" />
+          <Heading title="Dashboard" subtitle="Seluruh data hari ini!" />
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 mt-6">
             <ButtonCreate verified={currentUser.verifiedAccount} />
             {reports.map((report, index) => {
