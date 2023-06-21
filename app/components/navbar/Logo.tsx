@@ -12,7 +12,7 @@ const Logo = () => {
       alt="Logo"
       height={44}
       width={151}
-      className="p-4 -m-2"
+      className="p-4 -m-2 cursor-pointer"
       src="/images/p3dw-kawaluyaan.png"
     />
   );

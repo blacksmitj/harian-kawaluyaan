@@ -42,7 +42,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
     <>
       <div
         onClick={sideMenu.onClose}
-        className={`md:hidden fixed inset-0 h-screen bg-black/50 transition-opacity duration-300 z-[1]
+        className={`md:hidden fixed inset-0 h-screen bg-black/50 z-[1]
         ${sideMenu.isOpen ? "block" : "hidden"}
         `}
       ></div>
@@ -88,10 +88,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
             </ul>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col mb-12">
             <ul className="whitespace-pre px-2.5 text-[0.9rem] py-5 flex flex-col font-medium overflow-x-hidden gap-1">
               {/* ADMIN MENU */}
-              <hr className="mt-8" />
               {isAdmin() && (
                 <li>
                   <ButtonSidebar
@@ -112,8 +111,8 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
                 />
               </li>
             </ul>
+            <Toggle />
           </div>
-          <Toggle />
         </div>
       </div>
     </>
