@@ -1,15 +1,10 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import UsersClient from "./UsersClient";
 import EmptyState from "@/app/components/EmptyState";
-import { IUsersParams, getUsers } from "@/app/actions/getUsers";
-import DeleteUser from "@/app/components/tables/DeleteUser";
 import DeleteUserModal from "@/app/components/modals/DeleteUsertModal";
+import { getUsersCount } from "@/app/actions/getUsersCount";
 
-interface UsersPageProps {
-  searchParams: IUsersParams;
-}
-
-const UsersPage = async ({ searchParams }: UsersPageProps) => {
+const UsersPage = async () => {
   const currentUser = await getCurrentUser();
 
   if (currentUser?.role !== "ADMIN") {
@@ -20,9 +15,9 @@ const UsersPage = async ({ searchParams }: UsersPageProps) => {
     return <EmptyState title="Unauthorized" subtitle="Please Login" />;
   }
 
-  const users = await getUsers(searchParams);
+  const users = await getUsersCount();
 
-  if (!users) {
+  if (users === 0) {
     return <EmptyState title="Tidak Ada Users" subtitle="Daftarkan User" />;
   }
 

@@ -1,4 +1,4 @@
-import { IReportsParams, getReports } from "@/app/actions/getReports";
+import { getReportCountById } from "@/app/actions/getReportCountById";
 import ReportsClient from "./ReportsClient";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import EmptyState from "@/app/components/EmptyState";
@@ -14,11 +14,11 @@ const ReportsPage = async () => {
     return <EmptyState title="Unauthorized" subtitle="Please Login" />;
   }
 
-  const reports = await getReports({
+  const reports = await getReportCountById({
     userId: currentUser.id,
   });
 
-  if (reports.length === 0) {
+  if (reports === 0) {
     return (
       <>
         <EmptyState />

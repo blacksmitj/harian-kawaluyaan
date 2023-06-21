@@ -13,28 +13,15 @@ import { signOut } from "next-auth/react";
 import { User } from "@prisma/client";
 import { usePathname, useRouter } from "next/navigation";
 import { BiGroup } from "react-icons/bi";
-import dynamic from "next/dynamic";
-import { useState } from "react";
-
-const MediaQuery = dynamic(() => import("react-responsive"), {
-  ssr: false,
-});
 
 interface SideMenuProps {
   currentUser?: User | null;
 }
 
 const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
-  const [isTabletMid, setisTabletMid] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
   const sideMenu = useSideMenu();
-
-  const handleMediaQueryChange = (matches: any) => {
-    console.log("matches", matches);
-
-    setisTabletMid(matches);
-  };
 
   const isAdmin = () => {
     if (currentUser?.role !== "ADMIN") {
@@ -44,28 +31,15 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
   };
 
   const animation = () => {
-    if (isTabletMid) {
-      console.log("do tablet");
-
-      if (sideMenu.isOpen) {
-        return "translate-x-0 w-[16rem]";
-      } else {
-        return "-translate-x-[16rem] w-[16rem]";
-      }
+    if (sideMenu.isOpen) {
+      return "translate-x-0 w-[16rem]";
     } else {
-      console.log("not tablet");
-      if (sideMenu.isOpen) {
-        return "translate-x-0 w-[16rem]";
-      } else {
-        return "translate-x-0 w-[4rem]";
-      }
+      return "-translate-x-[16rem] md:translate-x-0 md:w-[4rem] w-[16rem]";
     }
   };
 
   return (
     <>
-      <MediaQuery maxWidth={768} onChange={handleMediaQueryChange}></MediaQuery>
-
       <div
         onClick={sideMenu.onClose}
         className={`md:hidden fixed inset-0 h-screen bg-black/50 transition-opacity duration-300 z-[1]
@@ -139,7 +113,6 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
               </li>
             </ul>
           </div>
-
           <Toggle />
         </div>
       </div>
