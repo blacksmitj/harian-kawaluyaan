@@ -26,14 +26,7 @@ const ButtonSidebar: React.FC<ButtonSidebarProps> = ({
         ${active ? "hover:bg-accent" : "hover:bg-accent"} 
       `}
     >
-      {Icon && (
-        <Icon
-          size={23}
-          className="
-						min-w-max
-					"
-        />
-      )}
+      {Icon && <Icon size={23} />}
       {label}
     </button>
   );
