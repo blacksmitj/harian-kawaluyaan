@@ -26,8 +26,8 @@ const ButtonSidebar: React.FC<ButtonSidebarProps> = ({
         ${active ? "hover:bg-accent" : "hover:bg-accent"} 
       `}
     >
-      {Icon && <Icon size={23} />}
-      {label}
+      <span className="w-fit">{Icon && <Icon size={23} />}</span>
+      <span className="w-fit">{label}</span>
     </button>
   );
 };

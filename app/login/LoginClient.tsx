@@ -37,15 +37,21 @@ const LoginClient = () => {
     signIn("credentials", {
       ...data,
       redirect: false,
-    }).then((callback) => {
-      if (callback?.ok) {
-        router.push("/dashboard");
-      }
-      if (callback?.error) {
-        setErrorMsg(callback.error);
+    })
+      .then((callback) => {
+        if (callback?.ok) {
+          router.push("/dashboard");
+        }
+        if (callback?.error) {
+          setErrorMsg(callback.error);
+        }
+      })
+      .catch((e) => {
+        setErrorMsg(e);
+      })
+      .finally(() => {
         setIsLoading(false);
-      }
-    });
+      });
   };
 
   const goRegister = useCallback(() => {
