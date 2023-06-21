@@ -53,6 +53,7 @@ const LoginClient = () => {
       .finally(() => {
         setIsLoading(false);
       });
+    router.refresh();
   };
 
   const goRegister = useCallback(() => {
