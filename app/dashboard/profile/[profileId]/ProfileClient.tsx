@@ -167,7 +167,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ currentUser, user }) => {
               <Button
                 neutral
                 label="Kembali"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.back()}
               ></Button>
             </div>
             {currentUser.id === user.id && (

@@ -9,11 +9,11 @@ import EditModal from "../components/modals/EditModal";
 import ReportCard from "../components/card/ReportCard";
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { BsCloudDownload } from "react-icons/bs";
-// import useReports from "../hooks/useReports";
 import ReportCardLoader from "../components/ReportCardLoader";
 import useOpenToast from "../hooks/useOpenToast";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import useDidMountEffect from "../hooks/useDidMountEffect";
 
 export type ReportWithUser = Report & {
   user: User;
@@ -31,15 +31,7 @@ const DashboardClient: React.FC<DashboardClientProps> = ({
   reports: initialReports,
 }) => {
   const openToast = useOpenToast();
-  // const [start, setStart] = useState(0);
-
-  // const { isLoading, error, reports, hasMore, refresh } = useReports({
-  //   start,
-  // });
-
-  // useEffect(() => {
-  //   refresh();
-  // }, [openToast.isChange]);
+  const router = useRouter();
 
   // const observer = useRef<IntersectionObserver | undefined>();
 
@@ -57,18 +49,16 @@ const DashboardClient: React.FC<DashboardClientProps> = ({
   //   [isLoading, hasMore]
   // );
 
-  const router = useRouter();
-
   const [isLoading, setIsLoading] = useState(false);
   const [reports, setReports] = useState<ReportWithUser[]>(initialReports);
   const [start, setStart] = useState(0);
   const [limit, setLimit] = useState(5);
   const [hasMore, setHasMore] = useState(true);
-  const [IsRefresh, setIsRefresh] = useState(false);
-  const [newReport, setnNewReport] = useState<ReportWithUser[]>([]);
 
-  useEffect(() => {
-    setnNewReport(initialReports);
+  useDidMountEffect(() => {
+    setReports([]);
+    setStart(0);
+    router.refresh();
   }, [openToast.isChange]);
 
   const getReports = async () => {
@@ -109,19 +99,11 @@ const DashboardClient: React.FC<DashboardClientProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 my-6">
             <ButtonCreate verified={currentUser.verifiedAccount} />
             {reports.map((report, index) => {
-              // if (reports.length === index + 1) {
-              //   return (
-              //     <div key={index}>
-              //       <ReportCard data={report} currentUser={currentUser} />
-              //     </div>
-              //   );
-              // } else {
               return (
                 <div key={index}>
                   <ReportCard data={report} currentUser={currentUser} />
                 </div>
               );
-              // }
             })}
           </div>
           {isLoading && (
@@ -134,9 +116,10 @@ const DashboardClient: React.FC<DashboardClientProps> = ({
             {hasMore ? (
               <button
                 onClick={getReports}
-                className="p-4 bg-primary rounded-full text-white animate-bounce"
+                className="p-4 bg-primary rounded-lg text-white border-[1px] border-darker/60 animate-bounce flex gap-2"
               >
                 <BsCloudDownload size={20} />
+                Unduh Data
               </button>
             ) : (
               <p>data terakhir disini...</p>

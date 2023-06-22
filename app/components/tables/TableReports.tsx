@@ -3,7 +3,12 @@
 import { Report, User } from "@prisma/client";
 import { format } from "date-fns";
 import { id, tr } from "date-fns/locale";
-import { BiFirstPage, BiLastPage } from "react-icons/bi";
+import {
+  BiFirstPage,
+  BiHorizontalLeft,
+  BiHorizontalRight,
+  BiLastPage,
+} from "react-icons/bi";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import { BsChevronLeft, BsChevronRight, BsSearch } from "react-icons/bs";
 import axios from "axios";
@@ -102,99 +107,104 @@ const TableReports: React.FC<TableReportsProps> = ({ currentUser }) => {
         <div className="-m-2 overflow-x-auto">
           <div className="p-1 min-w-full inline-block align-middle">
             <div className="overflow-hidden">
-              <table className="min-w-full divide-y divide-white text-left font-light text-xs table-fixed">
-                <thead className="border-b border-darker/10 rounded-lg">
-                  <tr>
-                    <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide w-[220px]">
-                      Layanan
-                    </th>
-                    <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide hidden sm:table-cell">
-                      Lokasi
-                    </th>
-                    <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide">
-                      Nomoratur
-                    </th>
-                    <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide hidden sm:table-cell">
-                      Result
-                    </th>
-                    <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {reports.map((report) => (
-                    <tr
-                      key={report.id}
-                      className="odd:bg-white even:bg-gray-50"
-                    >
-                      <td className="px-4 sm:px-6 py-3 min-w-[150px]">
-                        <div className="flex flex-col">
-                          <div className="font-semibold">{report.service}</div>
-                          <div className="flex">
-                            {format(report.createdAt, "dd MMMM yyyy", {
-                              locale: id,
-                            }) || "Tanggal tidak ditemukan"}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 sm:px-6 py-3 min-w-[150px] hidden sm:table-cell">
-                        <div className="flex flex-col gap-1">
-                          <div className="font-semibold">{report.place}</div>
-                          <div>{report.location}</div>
-                        </div>
-                      </td>
-                      <td className="px-4 sm:px-6 py-3">
-                        <div className="flex flex-col gap-2">
-                          <div className="flex flex-row gap-1 items-center">
-                            <BiFirstPage
-                              size={16}
-                              className="bg-accent/50 text-white rounded-sm"
-                            />
-                            <div>{"0" + report.started}</div>
-                          </div>
-                          <div className="flex flex-row gap-1 items-center">
-                            <BiLastPage
-                              size={16}
-                              className="bg-amber-600/50 text-white rounded-sm"
-                            />
-                            <div>{"0" + report.ended}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 sm:px-6 py-3 hidden sm:table-cell">
-                        <div className="flex flex-col gap-2">
-                          <div className="flex flex-row gap-2">
-                            <span>Total</span>
-                            <span className="font-semibold">
-                              {report.ended - report.started + 1}
-                            </span>
-                          </div>
-
-                          <div className="flex flex-row gap-2">
-                            <span>eSamsat</span>
-                            <span className="font-semibold">
-                              {report.eSamsat}
-                            </span>
-                          </div>
-
-                          <div className="flex flex-row gap-2">
-                            <span>Batal</span>
-                            <span className="font-semibold">
-                              {report.canceled}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 sm:px-6 py-3">
-                        <DropdownReport
-                          report={report}
-                          currentUser={currentUser}
-                        />
-                      </td>
+              {!isLoading ? (
+                <table className="min-w-full divide-y divide-white text-left font-light text-xs table-fixed">
+                  <thead className="border-b border-darker/10 rounded-lg">
+                    <tr>
+                      <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide w-[220px]">
+                        Layanan
+                      </th>
+                      <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide hidden sm:table-cell">
+                        Lokasi
+                      </th>
+                      <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide">
+                        Nomoratur
+                      </th>
+                      <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide hidden sm:table-cell">
+                        Result
+                      </th>
+                      <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide"></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              {isLoading && <TableLoader />}
+                  </thead>
+                  <tbody>
+                    {reports.map((report) => (
+                      <tr
+                        key={report.id}
+                        className="odd:bg-white even:bg-gray-50"
+                      >
+                        <td className="px-4 sm:px-6 py-3 min-w-[150px]">
+                          <div className="flex flex-col">
+                            <div className="font-semibold">
+                              {report.service}
+                            </div>
+                            <div className="flex">
+                              {format(report.createdAt, "dd MMMM yyyy", {
+                                locale: id,
+                              }) || "Tanggal tidak ditemukan"}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 min-w-[150px] hidden sm:table-cell">
+                          <div className="flex flex-col gap-1">
+                            <div className="font-semibold">{report.place}</div>
+                            <div>{report.location}</div>
+                          </div>
+                        </td>
+                        <td className="px-4 sm:px-6 py-3">
+                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-row gap-1 items-center">
+                              <BiHorizontalLeft
+                                size={20}
+                                className="bg-accent/50 text-white rounded-sm"
+                              />
+                              <div>{"0" + report.started}</div>
+                            </div>
+                            <div className="flex flex-row gap-1 items-center">
+                              <BiHorizontalRight
+                                size={20}
+                                className="bg-amber-600/50 text-white rounded-sm"
+                              />
+                              <div>{"0" + report.ended}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 hidden sm:table-cell">
+                          <div className="flex flex-col gap-2">
+                            <div className="flex flex-row gap-2">
+                              <span>Total</span>
+                              <span className="font-semibold">
+                                {report.ended - report.started + 1}
+                              </span>
+                            </div>
+
+                            <div className="flex flex-row gap-2">
+                              <span>eSamsat</span>
+                              <span className="font-semibold">
+                                {report.eSamsat}
+                              </span>
+                            </div>
+
+                            <div className="flex flex-row gap-2">
+                              <span>Batal</span>
+                              <span className="font-semibold">
+                                {report.canceled}
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 sm:px-6 py-3">
+                          <DropdownReport
+                            report={report}
+                            currentUser={currentUser}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <TableLoader />
+              )}
             </div>
           </div>
         </div>

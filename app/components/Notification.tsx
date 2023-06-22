@@ -41,7 +41,7 @@ const Notification = () => {
           </div>
         </div>
       </Toast.Root>
-      <Toast.Viewport className="[--viewport-padding:_25px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-fit max-w-[100vw] m-0 list-none z-[99] outline-none" />
+      <Toast.Viewport className="[--viewport-padding:_25px] fixed top-10 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-fit max-w-[100vw] m-0 list-none z-[99] outline-none" />
     </Toast.Provider>
   );
 };
