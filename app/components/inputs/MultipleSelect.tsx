@@ -46,7 +46,7 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
   }
 
   return (
-    <div>
+    <div className="md:mb-20">
       <Select
         placeholder="ex.05311640"
         isMulti
