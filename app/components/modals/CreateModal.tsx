@@ -57,6 +57,7 @@ export const services = [
 const CreateModal = () => {
   const openToast = useOpenToast();
   const createModal = useCreateModal();
+  const pathname = usePathname();
 
   const [msg, setMsg] = useState("");
 
@@ -145,6 +146,7 @@ const CreateModal = () => {
         openToast.setSubTitle("Data laporan anda telah tersimpan!");
         openToast.onOpen();
         openToast.onChange();
+        if (pathname === "/dashboard") window.location.assign(`/dashboard`);
       })
       .catch(() => {
         setMsg("Tidak dapat menyimpan data!");

@@ -11,7 +11,7 @@ export async function getReports(
       orderBy: {
         createdAt: 'desc'
       },
-      take: 5
+      take: 10
     });
     return reports;
   } catch (error: any) {

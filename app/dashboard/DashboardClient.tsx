@@ -12,7 +12,7 @@ import { BsCloudDownload } from "react-icons/bs";
 import ReportCardLoader from "../components/ReportCardLoader";
 import useOpenToast from "../hooks/useOpenToast";
 import axios from "axios";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import useDidMountEffect from "../hooks/useDidMountEffect";
 
 export type ReportWithUser = Report & {
@@ -33,25 +33,9 @@ const DashboardClient: React.FC<DashboardClientProps> = ({
   const openToast = useOpenToast();
   const router = useRouter();
 
-  // const observer = useRef<IntersectionObserver | undefined>();
-
-  // const lastBookelementRef = useCallback(
-  //   (node: any) => {
-  //     if (isLoading) return;
-  //     if (observer.current) observer.current.disconnect();
-  //     observer.current = new IntersectionObserver((entries) => {
-  //       if (entries[0].isIntersecting && hasMore) {
-  //         setStart(start + 5);
-  //       }
-  //     });
-  //     if (node) observer.current.observe(node);
-  //   },
-  //   [isLoading, hasMore]
-  // );
-
   const [isLoading, setIsLoading] = useState(false);
   const [reports, setReports] = useState<ReportWithUser[]>(initialReports);
-  const [start, setStart] = useState(0);
+  const [start, setStart] = useState(10);
   const [limit, setLimit] = useState(5);
   const [hasMore, setHasMore] = useState(true);
 

@@ -10,7 +10,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const currentUser = await getCurrentUser();
-  // const istTabletMid = useMediaQuery({ query: "(max-width: 768px)" });
+
   return (
     <>
       <Notification />
