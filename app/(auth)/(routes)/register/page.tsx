@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import RegisterClient from "./RegisterClient";
 import getCurrentUser from "@/actions/getCurrentUser";
 import AuthWrapper from "@/components/AuthWrapper";

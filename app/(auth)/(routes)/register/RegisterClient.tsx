@@ -2,14 +2,14 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Heading from "../components/Heading";
-import Input from "../components/inputs/Input";
 import { RxPerson } from "react-icons/rx";
 import { BiLockOpenAlt } from "react-icons/bi";
-import Button from "../components/Button";
 import { BsFillPersonPlusFill } from "react-icons/bs";
+import Heading from "@/components/Heading";
+import Input from "@/components/inputs/Input";
+import Button from "@/components/Button";
 
 const RegisterClient = () => {
   const [isLoading, setIsLoading] = useState(false);
