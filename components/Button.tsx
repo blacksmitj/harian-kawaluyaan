@@ -8,6 +8,7 @@ interface ButtonProps {
   disabled?: boolean;
   neutral?: boolean;
   small?: boolean;
+  fit?: boolean;
   icon?: IconType;
 }
 const Button: React.FC<ButtonProps> = ({
@@ -16,6 +17,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   neutral,
   small,
+  fit,
   icon: Icon,
 }) => {
   return (
@@ -31,16 +33,16 @@ const Button: React.FC<ButtonProps> = ({
         rounded-lg
         hover:opacity-80
         transition
-        w-full
         hover:bg-accent
         ${neutral ? "bg-neutral-100" : "bg-primary"}
         ${neutral ? "text-darker" : "text-white"}
         ${neutral ? "hover:text-white" : ""}
         ${small ? "py-1" : "py-3"}
         ${small ? "text-sm" : "text-md"}
+        ${fit ? "w-fit px-3" : "w-full"}
       `}
     >
-      {Icon && <Icon size={24} className={label ? `mr-2 -ml-3` : "-mx-4"} />}
+      {Icon && <Icon size={24} className={label ? `mr-2 -ml-3` : ""} />}
       {label}
     </button>
   );

@@ -3,12 +3,13 @@
 import { Report, User } from "@prisma/client";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import { utils, writeFile } from "xlsx";
 import {
   BiDownload,
   BiHorizontalLeft,
   BiHorizontalRight,
 } from "react-icons/bi";
-import { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect, SyntheticEvent, useCallback } from "react";
 import { BsSearch } from "react-icons/bs";
 import axios from "axios";
 import useOpenToast from "@/hooks/useOpenToast";
@@ -90,6 +91,37 @@ const TableReports: React.FC<TableReportsProps> = ({ currentUser }) => {
     setKeyword(query);
   };
 
+  const handleOnExport = useCallback(() => {
+    const tableData = reports.map((report, index) => ({
+      No: index + 1,
+      Layanan: report.service,
+      Location: report.place + " " + report.location,
+      Tanggal: report.createdAt,
+      NoAwal: report.started,
+      NoAkhir: report.ended,
+      Total: report.ended - report.started + 1,
+      eSamsat: report.eSamsat,
+      Batal: report.canceled,
+      ListBatal: JSON.parse(report.listCanceled)
+        .map((value: any) => value.label)
+        .join(", "),
+    }));
+
+    const ws = utils.json_to_sheet(tableData);
+    const wb = utils.book_new();
+    const currentDate = new Date();
+
+    utils.book_append_sheet(wb, ws, range);
+    writeFile(
+      wb,
+      "LaporanP3DWKawaluyaan-" +
+        range +
+        "-" +
+        currentDate.getFullYear() +
+        ".xlsx"
+    );
+  }, [range, reports]);
+
   return (
     <div className="flex flex-col gap-4">
       <Overview range={range} reports={counts} keyword={keyword} />
@@ -114,9 +146,11 @@ const TableReports: React.FC<TableReportsProps> = ({ currentUser }) => {
           </div>
           <div className="flex gap-x-4 justify-between">
             <SelectDateFilter onValueChange={onRangeChange} />
-            <button className="flex justify-center items-center disabled:opacity-70 disabled:cursor-not-allowed rounded-lg hover:opacity-80 transition w-fit hover:bg-accent py-3 h-full bg-primary text-white px-3">
+            <Button label="" icon={BiDownload} onClick={handleOnExport} fit />
+            {/* <button
+            className="flex justify-center items-center disabled:opacity-70 disabled:cursor-not-allowed rounded-lg hover:opacity-80 transition w-fit hover:bg-accent py-3 h-full bg-primary text-white px-3">
               <BiDownload size={18} className="-p-2" />
-            </button>
+            </button> */}
           </div>
         </div>
 
