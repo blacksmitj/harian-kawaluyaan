@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import getCurrentUser from "@/app/actions/getCurrentUser";
+import getCurrentUser from "@/actions/getCurrentUser";
 import { NextResponse } from "next/server";
-import prisma from "@/app/libs/prismadb";
+import prisma from "@/libs/prismadb";
 
 interface IParams {
   userId?: string

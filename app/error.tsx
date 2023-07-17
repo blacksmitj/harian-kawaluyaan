@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import EmptyState from "./components/EmptyState";
-import Button from "./components/Button";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Button from "@/components/Button";
 
 interface ErrorStateProps {
   error: Error;

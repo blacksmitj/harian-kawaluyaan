@@ -1,7 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import prisma from "@/app/libs/prismadb";
-import getCurrentUser from "@/app/actions/getCurrentUser"
+import prisma from "@/libs/prismadb";
+import getCurrentUser from "@/actions/getCurrentUser"
+import {
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  startOfYear
+} from "date-fns";
 
 export async function POST(
   request: Request
@@ -51,17 +61,43 @@ export async function GET(
   request: NextRequest,
 ) {
   const currentUser = await getCurrentUser();
-  const { nextUrl: { searchParams } } = request;
+  const { searchParams } = new URL(request.url);
 
   const keyword = searchParams.get('keyword') || "";
   const page = searchParams.get('page') || "0";
   const limit = searchParams.get('limit') || "10";
+  const range = searchParams.get('range');
+
+  const today = new Date();
+  let start = startOfDay(today)
+  let end = endOfDay(today);
+
+  if (range === "day") {
+    start = startOfDay(today);
+    end = endOfDay(today);
+  }
+  if (range === "week") {
+    start = startOfWeek(today);
+    end = endOfWeek(today);
+  }
+  if (range === "month") {
+    start = startOfMonth(today);
+    end = endOfMonth(today);
+  }
+  if (range === "year") {
+    start = startOfYear(today);
+    end = endOfYear(today);
+  }
 
   const offset = parseInt(limit) * parseInt(page);
 
   const totalRows = await prisma.report.count({
     where: {
       userId: currentUser?.id,
+      createdAt: {
+        lte: range !== "all" ? end : undefined,
+        gte: range !== "all" ? start : undefined,
+      },
       OR: [
         {service: {
           contains: keyword,
@@ -74,16 +110,48 @@ export async function GET(
         {location: {
           contains: keyword,
           mode: 'insensitive'
-        }},
+        }}
       ]
     },
   });
+
+  let allRessult = {};
+
+  if (keyword !== "" || range !== "all") {
+    allRessult = await prisma.report.findMany({
+      where: {
+        userId: currentUser?.id,
+        createdAt: {
+          lte: range !== "all" ? end : undefined,
+          gte: range !== "all" ? start : undefined,
+        },
+        OR: [
+          {service: {
+            contains: keyword,
+            mode: 'insensitive'
+          }},
+          {place: {
+            contains: keyword,
+            mode: 'insensitive'
+          }},
+          {location: {
+            contains: keyword,
+            mode: 'insensitive'
+          }}
+        ]
+      },
+    });
+  }
 
   const totalPage = Math.ceil(totalRows/parseInt(limit));
 
   const result = await prisma.report.findMany({
     where: {
       userId: currentUser?.id,
+      createdAt: {
+        lte: range !== "all" ? end : undefined,
+        gte: range !== "all" ? start : undefined,
+      },
       OR: [
         {service: {
           contains: keyword,
@@ -96,7 +164,7 @@ export async function GET(
         {location: {
           contains: keyword,
           mode: 'insensitive'
-        }},
+        }}
       ]
     },
     include: {
@@ -109,13 +177,12 @@ export async function GET(
     skip: offset
   });
 
-  
-
   return NextResponse.json({
     result,
     page: parseInt(page),
-    limit: limit,
-    totalRows: totalRows,
-    totalPage: totalPage,
+    limit,
+    totalRows,
+    totalPage,
+    counts: allRessult
   });
 }

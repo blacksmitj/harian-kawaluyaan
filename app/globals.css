@@ -17,16 +17,9 @@ body,
   }
 }
 
-
 .circle {
   width: 350px;
   height: 350px;
   background: linear-gradient(to bottom, #0D7D27 50%, #0C7066 75%);
   filter: blur(200px);
-}
-
-.app-title {
-  background: linear-gradient(45deg, #0C7066, #0D7D27);
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text;
 }
