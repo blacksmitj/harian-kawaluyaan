@@ -7,7 +7,7 @@ const Toggle = () => {
   const sideMenu = useSideMenu();
 
   return (
-    <div className="absolute -right-7 top-[140px] hidden md:flex">
+    <div className="absolute -right-7 top-[155px] hidden md:flex">
       <div className="w-fit h-fit bg-primary rounded-full p-1 text-white mr-5 hover:bg-accent hover:scale-95 cursor-pointer">
         <AiOutlineLeft
           size={15}

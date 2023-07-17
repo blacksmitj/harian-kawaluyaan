@@ -14,11 +14,11 @@ const DetailReportButton: React.FC<DetailReportButtonProps> = ({ report }) => {
 
   const onSee = useCallback(
     (report: Report & { user: User }) => {
-      reportModal.onOpen(),
-        reportModal.setReport({
-          ...report,
-          listCanceled: JSON.parse(report.listCanceled),
-        });
+      reportModal.onOpen();
+      reportModal.setReport({
+        ...report,
+        listCanceled: JSON.parse(report.listCanceled),
+      });
     },
     [reportModal]
   );

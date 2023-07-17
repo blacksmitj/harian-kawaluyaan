@@ -4,6 +4,7 @@ import {
   AiOutlinePaperClip,
   AiOutlineHome,
   AiOutlineLogout,
+  AiOutlineInbox,
 } from "react-icons/ai";
 import ButtonSidebar from "../ButtonSidebar";
 import Toggle from "./Toggle";
@@ -69,7 +70,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
               </li>
               <li>
                 <ButtonSidebar
-                  label="Laporan"
+                  label="Laporanku"
                   icon={AiOutlinePaperClip}
                   onClick={() => router.push("/reports")}
                   active={pathname === "/reports" ? true : false}
@@ -80,7 +81,15 @@ const SideMenu: React.FC<SideMenuProps> = ({ currentUser }) => {
                   <hr className="my-4" />
                   <li>
                     <ButtonSidebar
-                      label="Kelola User"
+                      label="Laporan Admin"
+                      icon={AiOutlineInbox}
+                      onClick={() => router.push("/allreports")}
+                      active={pathname === "/allreports" ? true : false}
+                    />
+                  </li>
+                  <li>
+                    <ButtonSidebar
+                      label="Kelola Admin"
                       icon={BiGroup}
                       onClick={() => router.push("/users")}
                       active={pathname === "/users" ? true : false}

@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Modal from "./Modal";
-import ResumeCard from "../report-detail";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import useOpenToast from "@/hooks/useOpenToast";
 import useDeleteReportModal from "@/hooks/useDeleteReportModal";
+import ReportDetail from "../report/report-detail";
+import UserHead from "../user-head-section";
 
 const DeleteReportModal = () => {
   const openToast = useOpenToast();
@@ -14,6 +15,10 @@ const DeleteReportModal = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const report = deleteReportModal.report;
+
+  if (!deleteReportModal.isOpen) {
+    return null;
+  }
 
   const onDelete = () => {
     setIsLoading(true);
@@ -48,7 +53,15 @@ const DeleteReportModal = () => {
 
   const bodyContent = (
     <div className="flex flex-col gap-4 overflow-y-scroll h-fit tall:h-fit tall:overflow-visible">
-      <ResumeCard
+      <div className="mt-2">
+        <UserHead
+          image={report.user.image}
+          name={report.user.name}
+          userId={report.userId}
+          createdAt={report.createdAt}
+        />
+      </div>
+      <ReportDetail
         started={report.started}
         ended={report.ended}
         eSamsat={report.eSamsat}

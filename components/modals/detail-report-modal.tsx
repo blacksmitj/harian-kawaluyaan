@@ -2,18 +2,19 @@
 
 import { useState } from "react";
 import Modal from "./Modal";
-import ResumeCard from "../report-detail";
+import ResumeCard from "../report/report-detail";
 import { User } from "@prisma/client";
-import ProfileMenu from "../ProfileMenu";
 import useReportModal from "@/hooks/useDetailReportModal";
 import useEditModal from "@/hooks/useEditModal";
 import UserHead from "../user-head-section";
 
-interface ReportModalProps {
+interface DetailReportModalProps {
   currentUser?: User | null;
 }
 
-const ReportModal: React.FC<ReportModalProps> = ({ currentUser }) => {
+const DetailReportModal: React.FC<DetailReportModalProps> = ({
+  currentUser,
+}) => {
   const reportModal = useReportModal();
   const editModal = useEditModal();
   const [isLoading, setIsLoading] = useState(false);
@@ -82,4 +83,4 @@ const ReportModal: React.FC<ReportModalProps> = ({ currentUser }) => {
   );
 };
 
-export default ReportModal;
+export default DetailReportModal;

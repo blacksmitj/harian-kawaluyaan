@@ -75,7 +75,7 @@ export async function DELETE(
   const report = await prisma.report.deleteMany({
     where: {
       id: reportId,
-      userId: currentUser.id
+      // userId: currentUser.id
     }
   });
 

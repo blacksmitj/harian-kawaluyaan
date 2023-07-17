@@ -16,7 +16,7 @@ import Modal from "./Modal";
 import Heading from "../Heading";
 import Input from "../inputs/Input";
 import Counter from "../inputs/Counter";
-import ResumeCard from "../report-detail";
+import ResumeCard from "../report/report-detail";
 import ServiceInput from "../inputs/ServiceInput";
 import InputNomoratur from "../inputs/InputNomoratur";
 import MultipleSelect from "../inputs/MultipleSelect";

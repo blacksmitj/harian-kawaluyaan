@@ -1,9 +1,12 @@
 import { create } from "zustand";
 import { SafeReport } from "../types";
+import { User } from "@prisma/client";
 
 interface DeleteReportModalStore {
-  report: SafeReport;
-  setReport: (report: SafeReport) => void;
+  report: SafeReport & {
+    user: User;
+  };
+  setReport: (report: SafeReport & {user: User}) => void;
 
   isDelete: boolean;
   onDelete: () => void;
@@ -15,8 +18,8 @@ interface DeleteReportModalStore {
 }
 
 const useDeleteReportModal = create<DeleteReportModalStore>((set) => ({
-  report: {} as SafeReport,
-  setReport: (report: SafeReport) => set((state) => ({...state, report})),
+  report: {} as SafeReport & {user: User},
+  setReport: (report: SafeReport & {user: User}) => set((state) => ({...state, report})),
 
   isDelete: false,
   onDelete: () => set({ isDelete: true}),

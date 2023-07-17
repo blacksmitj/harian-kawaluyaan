@@ -8,10 +8,7 @@ import { useRouter } from "next/navigation";
 import useOpenToast from "@/hooks/useOpenToast";
 import useDidMountEffect from "@/hooks/useDidMountEffect";
 import ReportCardLoader from "@/components/ReportCardLoader";
-import CreateModal from "@/components/modals/create-report-modal";
-import EditModal from "@/components/modals/edit-report-modal";
 import Container from "@/components/Container";
-import Heading from "@/components/Heading";
 import ButtonCreate from "@/components/ButtonCreate";
 import ReportCard from "@/components/card/report-card";
 
@@ -76,12 +73,6 @@ const DashboardClient: React.FC<DashboardClientProps> = ({
   return (
     <Container>
       <div className="grid text-darker pt-16">
-        {isLoading && (
-          <div className="flex flex-col gap-4">
-            <ReportCardLoader />
-            <ReportCardLoader />
-          </div>
-        )}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 my-6">
           <ButtonCreate verified={currentUser.verifiedAccount} />
           {reports.map((report, index) => {
@@ -91,6 +82,19 @@ const DashboardClient: React.FC<DashboardClientProps> = ({
               </div>
             );
           })}
+          {isLoading && (
+            <>
+              <ReportCardLoader />
+              <ReportCardLoader />
+              <ReportCardLoader />
+              <ReportCardLoader />
+              <ReportCardLoader />
+              <ReportCardLoader />
+              <ReportCardLoader />
+              <ReportCardLoader />
+              <ReportCardLoader />
+            </>
+          )}
         </div>
 
         <div className="m-8 flex justify-center">

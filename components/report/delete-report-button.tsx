@@ -14,7 +14,7 @@ const DeleteReportButton: React.FC<DeleteReportButtonProps> = ({ report }) => {
   const deleteReportModal = useDeleteReportModal();
 
   const onDelete = useCallback(
-    (id: string) => {
+    (report: Report & { user: User }) => {
       setIsLoading(true);
       deleteReportModal.setReport({
         ...report,
@@ -23,11 +23,11 @@ const DeleteReportButton: React.FC<DeleteReportButtonProps> = ({ report }) => {
       deleteReportModal.onOpen();
       setIsLoading(false);
     },
-    [deleteReportModal, report]
+    [deleteReportModal]
   );
   return (
     <button
-      onClick={() => onDelete(report.id)}
+      onClick={() => onDelete(report)}
       disabled={isLoading}
       className="rounded-xl py-1 flex justify-start items-center gap-2 w-full"
     >

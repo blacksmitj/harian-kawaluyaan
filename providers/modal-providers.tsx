@@ -1,7 +1,7 @@
 "use client";
 
-import DeleteReportModal from "@/components/modals/DeleteReportModal";
-import ReportModal from "@/components/modals/ReportModal";
+import DeleteReportModal from "@/components/modals/delete-report-modal";
+import DetailReportModal from "@/components/modals/detail-report-modal";
 import CreateReportModal from "@/components/modals/create-report-modal";
 import EditReportModal from "@/components/modals/edit-report-modal";
 import { User } from "@prisma/client";
@@ -25,7 +25,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
   }
   return (
     <>
-      <ReportModal currentUser={currentUser} />
+      <DetailReportModal currentUser={currentUser} />
       <CreateReportModal />
       <EditReportModal />
       <DeleteReportModal />

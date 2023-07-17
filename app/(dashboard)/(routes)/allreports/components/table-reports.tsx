@@ -19,6 +19,7 @@ import Button from "@/components/Button";
 import DropdownReport from "@/components/report/dropdown-report";
 import Overview from "@/components/report/overview";
 import SelectDateFilter from "@/components/report/select-date-filter";
+import Avatar from "@/components/Avatar";
 
 interface TableReportsProps {
   currentUser: User;
@@ -49,7 +50,7 @@ const TableReports: React.FC<TableReportsProps> = ({ currentUser }) => {
 
   const getUsers = async () => {
     setIsLoading(true);
-    const response = await axios.get(`/api/report`, {
+    const response = await axios.get(`/api/allreport`, {
       params: {
         keyword,
         page,
@@ -160,6 +161,9 @@ const TableReports: React.FC<TableReportsProps> = ({ currentUser }) => {
                   <table className="min-w-full divide-y divide-white text-left font-light text-xs md:text-sm table-fixed">
                     <thead className="border-b border-darker/10 rounded-lg">
                       <tr>
+                        <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide hidden sm:table-cell">
+                          User
+                        </th>
                         <th className="px-4 sm:px-6 py-3 font-semibold tracking-wide">
                           Layanan
                         </th>
@@ -181,6 +185,28 @@ const TableReports: React.FC<TableReportsProps> = ({ currentUser }) => {
                           key={report.id}
                           className="odd:bg-white even:bg-gray-50"
                         >
+                          <td className="px-4 py-2 sm:px-6 sm:py-3 truncate hover:text-clip hidden sm:table-cell">
+                            <div className="flex flex-row items-center gap-3 min-w-fit">
+                              <div className="min-w-fit">
+                                <Avatar
+                                  src={
+                                    report.user.image ||
+                                    process.env.NEXT_PUBLIC_API_DICEBAR! +
+                                      report.user.name
+                                  }
+                                  size={45}
+                                />
+                              </div>
+                              <div className="flex flex-col gap-0.5 min-w-fit ">
+                                <div className="font-semibold text-sm">
+                                  {report.user.name}
+                                </div>
+                                <div className="font-light ">
+                                  {report.user.email}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
                           <td className="px-4 sm:px-6 py-3 min-w-[150px]">
                             <div className="flex flex-col">
                               <div className="font-medium">

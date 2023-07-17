@@ -3,9 +3,9 @@
 import { SafeReport } from "@/types";
 import { AiOutlineMobile } from "react-icons/ai";
 import { BiHorizontalLeft, BiHorizontalRight } from "react-icons/bi";
-import Point from "./point";
+import Point from "../point";
 import { TbReportAnalytics, TbReportOff } from "react-icons/tb";
-import Nomoratur from "./nomoratur";
+import Nomoratur from "../nomoratur";
 
 interface ReportDetailProps {
   started: number;
