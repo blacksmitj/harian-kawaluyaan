@@ -1,7 +1,6 @@
 "use client";
 
-import useDidMountEffect from "@/app/hooks/useDidMountEffect";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 interface CounterProps {
