@@ -11,6 +11,7 @@ import Loader from "@/components/Loader";
 import Heading from "@/components/Heading";
 import Input from "@/components/inputs/Input";
 import Button from "@/components/Button";
+import Link from "next/link";
 
 const LoginClient = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -37,34 +38,33 @@ const LoginClient = () => {
     signIn("credentials", {
       ...data,
       redirect: false,
-    })
-      .then((callback) => {
-        if (callback?.ok) {
-          router.push("/");
-          router.refresh();
-        }
-        if (callback?.error) {
-          setErrorMsg(callback.error);
-        }
-      })
-      .catch((e) => {
-        setErrorMsg(e);
-      })
-      .finally(() => {
+    }).then((callback) => {
+      if (callback?.ok) {
+        router.push("/");
+      }
+      if (callback?.error) {
+        setErrorMsg(callback.error);
         setIsLoading(false);
-      });
-    router.refresh();
+      }
+    });
   };
 
   const goRegister = useCallback(() => {
     router.push("/register");
   }, [router]);
+
   return (
     <div className="flex justify-center items-center h-screen bg-white-prime">
       <div className="w-full sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 flex flex-row shadow-2xl shadow-accent/20">
         {isLoading && (
           <div className="fixed inset-0 h-screen w-full bg-white/50 z-[1] justify-center items-center backdrop-blur-sm">
             <Loader />
+            <p className="text-sm text-center -mt-36">
+              Nothing Happened ?{" "}
+              <Link href={"/"} className="underline text-primary">
+                click here!
+              </Link>
+            </p>
           </div>
         )}
         <div className="absolute -right-0 circle rounded-full bottom-4"></div>
