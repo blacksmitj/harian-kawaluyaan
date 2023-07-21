@@ -53,6 +53,10 @@ const LoginClient = () => {
     router.push("/register");
   }, [router]);
 
+  const goDashboard = useCallback(() => {
+    window.location.assign(`/`);
+  }, []);
+
   return (
     <div className="flex justify-center items-center h-screen bg-white-prime">
       <div className="w-full sm:w-[90%] md:w-4/5 lg:w-3/4 xl:w-2/3 2xl:w-1/2 flex flex-row shadow-2xl shadow-accent/20">
@@ -61,9 +65,9 @@ const LoginClient = () => {
             <Loader />
             <p className="text-sm text-center -mt-36">
               Nothing Happened ?{" "}
-              <Link href={"/"} className="underline text-primary">
+              <button onClick={goDashboard} className="underline text-primary">
                 click here!
-              </Link>
+              </button>
             </p>
           </div>
         )}
