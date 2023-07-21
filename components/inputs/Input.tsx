@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import { IconType } from "react-icons";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 interface InputProps {
   id: string;
@@ -24,6 +26,10 @@ const Input: React.FC<InputProps> = ({
   errors,
   placeholder,
 }) => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const togglePasswordVisibility = () => {
+    setPasswordVisible((prevState) => !prevState);
+  };
   return (
     <div className="mb-1">
       {label && (
@@ -42,7 +48,7 @@ const Input: React.FC<InputProps> = ({
           id={id}
           disabled={disabled}
           {...register(id, { required })}
-          type={type}
+          type={!passwordVisible ? type : "text"}
           className={`bg-gray-50 border-[3px] border-gray-300 text-sm font-medium rounded-lg block w-full p-2.5
           ${Icon ? "pl-10" : "pl-4"}
           ${errors[id] ? "border-red-200" : "border-emerald-600/10"}
@@ -54,6 +60,18 @@ const Input: React.FC<InputProps> = ({
           `}
           placeholder={placeholder}
         />
+        {id === "password" && (
+          <button
+            onClick={togglePasswordVisibility}
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-darker/60 cursor-pointer outline-none"
+          >
+            {passwordVisible ? (
+              <AiOutlineEye size={20} />
+            ) : (
+              <AiOutlineEyeInvisible size={20} />
+            )}
+          </button>
+        )}
       </div>
     </div>
   );
