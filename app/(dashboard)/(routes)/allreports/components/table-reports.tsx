@@ -92,8 +92,8 @@ const TableReports: React.FC<TableReportsProps> = ({ currentUser }) => {
     setKeyword(query);
   };
 
-  const handleOnExport = useCallback(() => {
-    const tableData = reports.map((report, index) => ({
+  const handleOnExport = useCallback(async () => {
+    const tableData = counts.map((report: any, index: number) => ({
       No: index + 1,
       Layanan: report.service,
       Location: report.place + " " + report.location,
